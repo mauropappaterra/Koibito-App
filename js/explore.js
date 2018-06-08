@@ -19,7 +19,7 @@ if (login_data == null){
     var user_points = 0;
 
     login_data = JSON.parse(login_data);
-    $.each(USER_TABLE, function(element){ // fill in deeds table
+    $.each(SESSION_USER_TABLE, function(element){ // fill in deeds table
 
         user_info = getUserInfo(this.username);
         user_points = getUserPoints(this.username);

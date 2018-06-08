@@ -475,6 +475,7 @@ var HISTORY_TABLE = [
 ];
 
 /*LOAD CURRENT SECTION DATA FROM SESSION STORAGE*/
+
 if (sessionStorage.getItem("SESSION_HISTORY_TABLE") == null){
     sessionStorage.setItem("SESSION_HISTORY_TABLE",JSON.stringify(HISTORY_TABLE));
     /*alert("History databases loaded from script!")
@@ -488,5 +489,22 @@ if (sessionStorage.getItem("SESSION_RELATIONSHIPS_TABLE") == null){
 } else {
     alert("Relationship database will be loaded from session storage!")*/
 }
+
+if (sessionStorage.getItem("SESSION_USER_TABLE") == null){
+    sessionStorage.setItem("SESSION_USER_TABLE",JSON.stringify(USER_TABLE));
+    /*alert("Users databases loaded from script!")
+} else {
+    alert("Users database will be loaded from session storage!")*/
+}
+
+if (sessionStorage.getItem("SESSION_INFORMATION_TABLE") == null){
+    sessionStorage.setItem("SESSION_INFORMATION_TABLE",JSON.stringify(INFORMATION_TABLE));
+    /*alert("Information databases loaded from script!")
+} else {
+    alert("Information database will be loaded from session storage!")*/
+}
+
 var SESSION_HISTORY_TABLE = JSON.parse(sessionStorage.getItem("SESSION_HISTORY_TABLE"));
 var SESSION_RELATIONSHIPS_TABLE = JSON.parse(sessionStorage.getItem("SESSION_RELATIONSHIPS_TABLE"));
+var SESSION_USER_TABLE = JSON.parse(sessionStorage.getItem("SESSION_USER_TABLE"));
+var SESSION_INFORMATION_TABLE = JSON.parse(sessionStorage.getItem("SESSION_INFORMATION_TABLE"));

@@ -21,7 +21,8 @@ if (login_data == null){
 } else {
     login_data = JSON.parse(login_data); // parse string back to JSON...
     user_information = getUserInfo(login_data.username);// ... and retrieve user information
-    //alert("Log in as " + login_data.username);
+    alert("Log in as " + login_data.username);
+    alert(JSON.stringify(user_information));
 
     /*Load User and SO information into page*/
     $("#profile_picture").attr("src","img/users/"+ login_data.username +".jpg");
@@ -49,7 +50,7 @@ if (login_data == null){
         $("#ask_points").addClass("hidden");
         $("#review_points").addClass("hidden");
         $(".link_so").addClass("hidden");
-        //$("#relationship_tab").addClass("hidden"); // this tab should be disable
+        $("#relationship_tab").addClass("hidden"); // this tab should be disable
     }
     /*Retrieve all users deeds from HISTORY_TABLE and calculate points, print to DOM*/
     user_deed_history = getUserDeeds(login_data.username);

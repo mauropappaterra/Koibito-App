@@ -16,7 +16,7 @@ function loginScript (login_data){
 
     //alert("Login in as " + username + " with password " + password);
 
-    $.each(USER_TABLE, function(element){
+    $.each(SESSION_USER_TABLE, function(element){
         if (this.username == username){ // check if username exists
             exist = true;
             if (this.password == password){ // check if password matches
@@ -34,6 +34,81 @@ function loginScript (login_data){
     }
 };
 
+function signupScript (signup_data){
+
+    var username = signup_data.username.value;
+    var password = signup_data.password.value;
+    var password_repeat = signup_data.password_repeat.value;
+    var email = signup_data.email.value;
+
+    var gender = parseInt(signup_data.gender.value);
+
+    var hasbandu = false;
+    var waifu = false;
+    var wakashu = false;
+
+    $("input:checkbox[name=looking]:checked").each(function(){
+        //alert ("selected: " + $(this).val());
+        if ($(this).val() == "hasbandu"){
+            hasbandu = true;
+        }
+        if ($(this).val() == "waifu"){
+            waifu = true;
+        }
+        if ($(this).val() == "wakashu"){
+            wakashu = true;
+        }
+    });
+
+    var first_name = signup_data.first_name.value;
+    var last_name = signup_data.last_name.value;
+    var DOB = signup_data.DOB.value;
+    var description = signup_data.description.value;
+
+    var new_user = {
+        "username": username,
+        "password": password,
+        "email": email,
+    };
+    //alert (JSON.stringify(new_user));
+
+    //**SAVE TO DATABASE HERE**
+    SESSION_USER_TABLE.push(new_user);
+    sessionStorage.setItem("SESSION_USER_TABLE", JSON.stringify(SESSION_USER_TABLE));
+
+    var new_info = {
+        "username": username,
+        "first_name": first_name,
+        "last_name": last_name,
+        "date_of_birth": DOB,
+        "gender": gender,
+        "description": description,
+        "hasbandu": hasbandu,
+        "waifu": waifu,
+        "wakashu": wakashu,
+    };
+    //alert (JSON.stringify(new_info));
+
+    //**SAVE TO DATABASE HERE**
+    SESSION_INFORMATION_TABLE.push(new_info);
+    sessionStorage.setItem("SESSION_INFORMATION_TABLE", JSON.stringify(SESSION_INFORMATION_TABLE));
+
+    alert("You have successfully created your Koibito profile!");
+
+    $("#overlay").addClass("hidden");
+    $("#signupWindow").addClass("hidden");
+}
+
+function nextPage(){
+    $("#page_1").addClass("hidden");
+    $("#page_2").removeClass("hidden");
+}
+
+function previousPage(){
+    $("#page_2").addClass("hidden");
+    $("#page_1").removeClass("hidden");
+}
+
 /*Pop up windows*/
 $("#login_button").click(function() {
     $("#overlay").removeClass("hidden");
@@ -43,6 +118,8 @@ $("#login_button").click(function() {
 $("#signup_button").click(function() {
     $("#overlay").removeClass("hidden");
     $("#signupWindow").removeClass("hidden");
+    $("#page_1").removeClass("hidden");
+    $("#page_2").addClass("hidden");
 });
 
 $("#give_points").click(function() {

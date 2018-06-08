@@ -82,29 +82,61 @@
 
             <h1>Create a Koibito <i class="fa fa-heart fa-1x red"></i> Account</h1>
 
-            <h4 id="new_user_name">Select username</h4>
-            <input type="text" name="user_name" placeholder="Enter your user name">
+            <div id ="page_1">
+                <h4 id="new_email">Your Email Address</h4>
+                <input type="text" name="email" placeholder="Your email address">
 
-            <h4 id="new_password">Choose your password</h4>
-            <input type="password" name="password" placeholder="Enter your password">
+                <h4 id="new_user_name">Choose your username</h4>
+                <input type="text" name="username" placeholder="Choose your user name">
 
-            <h4 id="repeat_password">Repeat your password</h4>
-            <input type="password" name="repeat_password" placeholder="Repeat your password">
+                <h4 id="new_password">Choose your password</h4>
+                <input type="password" name="password" placeholder="Choose your password">
 
-            <h4 id="gender">Choose your profile type</h4>
-            <select name="gender">
-                <option value="hasbandu">I am a Hasbandu (male)</option>
-                <option value="waifu">I am a Waifu (female)</option>
-                <option value="wakashu">I am a Wakashu (non-binary)</option>
-            </select>
+                <h4 id="repeat_password">Repeat your password</h4>
+                <input type="password" name="password_repeat" placeholder="Repeat your password">
 
-            <h4 id="orientation">I am looking for a ...</h4>
+                <h4 id="gender">Choose your profile type</h4>
+                <select name="gender">
+                    <option value="0">I am a Hasbandu (male)</option>
+                    <option value="1">I am a Waifu (female)</option>
+                    <option value="2">I am a Wakashu (non-binary)</option>
+                </select>
 
-            <input type="checkbox" name="looking" value="male"> <b><i>Hasbandu</i> </b><br>
-            <input type="checkbox" name="looking" value="female"> <b><i>Waifu</i> </b><br>
-            <input type="checkbox" name="looking" value="other"> <b><i>Wakashu</i> </b><br>
+                <h4 id="orientation">I am looking for a ...</h4>
 
-            <input type="submit" id="signup" name="signup" value="Next >" onClick="">
+                <input type="checkbox" name="looking" value="hasbandu"> <b><i>Hasbandu</i> </b><br>
+                <input type="checkbox" name="looking" value="waifu"> <b><i>Waifu</i> </b><br>
+                <input type="checkbox" name="looking" value="wakashu"> <b><i>Wakashu</i> </b><br>
+
+                <input type="button" id="next" name="next" value="Next >" onClick="nextPage()">
+
+
+            </div>
+
+            <div id="page_2" class="hidden">
+                <h4 id="new_first_name">Enter Your First Name</h4>
+                <input type="text" name="first_name" placeholder="Your first Name...">
+
+                <h4 id="new_last_name">Enter Your Last Name</h4>
+                <input type="text" name="last_name" placeholder="Your last Name">
+
+                <h4 id="new_DOB">Your Date of Birth</h4>
+                <input type="date" name="DOB">
+
+                <h4 id="new_description">Write a short description...</h4>
+                <textarea name="description"> Tell us about you....</textarea>
+
+                <h4 id="new_avatar">Upload your profile picture</h4>
+                <input type="file" name="avatar" accept="image/*">
+
+                <br><br>
+
+                <h5><b>By creating an account you agree to our <a href="">Terms & Conditions</a>.</b></h5>
+
+                <input type="submit" id="signup" name="signup" value="Sign Up" onClick="signupScript(signupForm)">
+                <input type="button" id="back" name="back" value="< Go Back" onClick="previousPage()">
+
+            </div>
 
         </form>
     </div>

@@ -120,7 +120,7 @@ function deedPoints (deed){
 function getFirstname (username){
     /**Given an username as argument, this method returns the first name of from the DB */
     var first_name = "";
-    $.each(INFORMATION_TABLE, function(element){
+    $.each(SESSION_INFORMATION_TABLE, function(element){
         if (this.username == username){
             first_name = this.first_name;
             return;
@@ -347,7 +347,7 @@ function getUserInfo (username){
     /** Given a username as argument, this method returns a JS objects containing all personal
      * information of the user */
     var information = null;
-    $.each(INFORMATION_TABLE, function(element){
+    $.each(SESSION_INFORMATION_TABLE, function(element){
         if (this.username == username){
             information = this;
         }
