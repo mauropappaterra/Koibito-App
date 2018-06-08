@@ -3,11 +3,29 @@
    Created by Mauro J. Pappaterra on 14 of May 2018.
 */
 
+.load_profiles {
+    display: block;
+
+    margin-right: auto;
+    margin-left: auto;
+
+    text-align:center;
+
+    /*display:inline-block;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;*/
+
+}
+
 .user_profile{
     float: left;
     width: 300px;
     padding: 20px;
     margin: 20px;
+
+    display:inline-block;
 }
 
 .user_profile img {

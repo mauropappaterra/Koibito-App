@@ -4,7 +4,8 @@
  */
 
 /* ANON_USER PAGE SCRIPTS
-* All scripts related to the single page. Each page has their own scripts in a single js document.
+* All scripts related to the anon user page (profile other than user or partner).
+* Each page has their own scripts in a single js document.
 * The methods translate() is unique for each individual page.
 */
 
@@ -12,11 +13,11 @@
 var login_data = JSON.parse(localStorage.getItem("login_data"));
 var anon_username = localStorage.getItem("anon_username");
 
-if (anon_username == null){
-    window.location.href = "profile.html"; // if there is no user to display, return to profile page
+if (anon_username == null){ // if there is no user to display, return to profile page
+    window.location.href = "profile.html";
 } else {
 
-    var anon_information = getUserInfo(anon_username);
+    var anon_information = getUserInfo(anon_username); // retrieve anon and user information from DB
     var user_information = getUserInfo(login_data.username);
 
     if (activeRelationship(anon_information.username, user_information.username)){
@@ -32,7 +33,6 @@ if (anon_username == null){
     $(".firstname").text(anon_information.first_name);
     $(".lastname").text(anon_information.last_name);
     $("#description").text(anon_information.description);
-
     /*Gender will be used for different CSS styling*/
     var gender = getGender(anon_information.gender);
     $(".gender").text(gender);
@@ -59,17 +59,17 @@ if (anon_username == null){
     var anon_points = calculatePoints(anon_deed_history);
 
     $(".total_points").text(anon_points);
-    $("#stars").html(individual_stars(anon_points, 1));
-    $("#score").text(score(anon_points));
+    $("#stars").html(userStars(anon_points, 1));
+    $("#returnLabel").text(returnLabel(anon_points));
 
     /*Load Anon Overview into page, this loop prints to DOM in chronological order the last 6 deeds completed*/
     $.each(anon_deed_history.slice(-6), function(element){ // fill in deeds table
         $("#deeds_overview").prepend(
         "<div class='deed " + gender +"'>" +
         "<img src='img/deeds/"+ this.deed +".png'>" +
-        "<h3 class='title'>" + anon_information.first_name + " " + deed_description(this.deed) + "</h3>" +
+        "<h3 class='title'>" + anon_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
         "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by+" link_white'>" +getFirstname(this.endorsed_by)  + "</span> <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
-        "<h4 class='points'><b>" + deed_points(this.deed)+" points</b></h4>" +
+        "<h4 class='points'><b>" + deedPoints(this.deed)+" points</b></h4>" +
         "</div>"
     )
     });
@@ -90,23 +90,17 @@ $("#confirmBind").click(function(){
             var new_relationship = {
                 "A": user_information.username,
                 "B": anon_username,
-                "date_started": new Date(),
+                "date_started": new Date(), // null
                 "date_ended": null,
             };
             //alert (JSON.stringify(new_relationship));
             SESSION_RELATIONSHIPS_TABLE.push(new_relationship);
             sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
 
-            //localStorage.setItem("anon_username", so_information.username);
-            window.location.href = "partner.html";
+            window.location.href = "partner.html"; // redirect to corresponding view
         }
     }
 });
-
-/*$("#relationship_info").click(function(){
-    localStorage.setItem("anon_username", getSO(anon_information.username));
-    window.location.href = "anon_username.html";
-});*/
 
 $("#cancelBind").click(function(){
     $("#overlay").addClass("hidden");

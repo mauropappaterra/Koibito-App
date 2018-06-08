@@ -16,7 +16,7 @@ var endorsed_deeds = []; // keep track of the endorsed deeds
 if (!hasSO(login_data.username)){
     window.location.href = "profile.html";
 } else {
-    var user_information = getUserInfo(login_data.username);
+    var user_information = getUserInfo(login_data.username); // retrieve user and partner info form DB
     var so_information = getUserInfo(getSO(login_data.username));
     //alert("You are looking at your partners profile " + so_information.first_name);
 
@@ -29,7 +29,8 @@ if (!hasSO(login_data.username)){
     $(".firstname").text(so_information.first_name);
     $(".lastname").text(so_information.last_name);
     $("#description").text(so_information.description);
-    var so_gender = getGender(so_information.gender); //Gender will be used for different CSS styling
+    /*Gender will be used for different CSS styling*/
+    var so_gender = getGender(so_information.gender);
     $(".so_gender").text(so_gender);
     $(".so_css").addClass(so_gender);
 
@@ -38,17 +39,17 @@ if (!hasSO(login_data.username)){
     var points = calculatePoints(partners_deed_history);
 
     $(".total_points").text(points);
-    $("#stars").html(individual_stars(points, 1));
-    $("#score").text(score(points));
+    $("#stars").html(userStars(points, 1));
+    $("#returnLabel").text(returnLabel(points));
 
     /*Load Partners Overview into page, this loop prints to DOM in chronological order the last 6 deeds completed*/
-    $.each(partners_deed_history.slice(-6), function(element){ // fill in deeds table
+    $.each(partners_deed_history.slice(-6), function(element){
         $("#deeds_overview").prepend(
             "<div class='deed " + so_gender +"'>" +
             "<img src='img/deeds/"+ this.deed +".png'>" +
-            "<h3 class='title'>" + so_information.first_name + " " + deed_description(this.deed) + "</h3>" +
+            "<h3 class='title'>" + so_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
             "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by +" link_white'>" + getFirstname(this.endorsed_by) + "</span>  <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
-            "<h4 class='points'><b>+"+ deed_points(this.deed)+" points</b></h4>" +
+            "<h4 class='points'><b>+"+ deedPoints(this.deed)+" points</b></h4>" +
             "</div>"
         )
     });
@@ -90,7 +91,7 @@ function resetGivePointsWindow () { // resets give points window
 $("#submitPoints").click(function(){
 
     if (endorsed_deeds.length == 0){
-        alert("You must select at least one deed before you can submit your endorsment")
+        alert("You must select at least one deed before you can submit your endorsement")
     } else {
         //alert(endorsed_deeds.toString());
         endorsed_deeds.forEach(function(item) {

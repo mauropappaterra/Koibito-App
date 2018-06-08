@@ -57,7 +57,7 @@ ul li {
 
     position: absolute;
     padding: 25px;
-    width: 40%;
+    width: 50%;
     margin-left: 30%;
     margin-right: 30%;
     margin-bottom: 30%;
@@ -79,6 +79,7 @@ ul li {
 #login, #signup{
     float: right;
 }
+
 
 .close, .close:hover {
     color: white;

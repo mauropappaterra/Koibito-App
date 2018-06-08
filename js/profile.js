@@ -20,7 +20,7 @@ if (login_data == null){
     window.location.href = "index.html";
 } else {
     login_data = JSON.parse(login_data); // parse string back to JSON...
-    user_information = getUserInfo(login_data.username);//... and retrieve user information
+    user_information = getUserInfo(login_data.username);// ... and retrieve user information
     //alert("Log in as " + login_data.username);
 
     /*Load User and SO information into page*/
@@ -28,13 +28,12 @@ if (login_data == null){
     $(".firstname").text(user_information.first_name);
     $(".lastname").text(user_information.last_name);
     $("#description").text(user_information.description);
-
-    /*Gender is used to different CSS*/
+    /*Gender will be used for different CSS styling*/
     var user_gender = getGender(user_information.gender);
     $(".gender").text(user_gender);
     $(".user_css").addClass(user_gender);
 
-    if (hasSO(login_data.username)){
+    if (hasSO(login_data.username)){ // check if user is in a relations ship, print info to DOM accordingly
         $("#ask_points").removeClass("hidden");
         $("#review_points").removeClass("hidden");
 
@@ -52,23 +51,22 @@ if (login_data == null){
         $(".link_so").addClass("hidden");
         //$("#relationship_tab").addClass("hidden"); // this tab should be disable
     }
-
     /*Retrieve all users deeds from HISTORY_TABLE and calculate points, print to DOM*/
     user_deed_history = getUserDeeds(login_data.username);
     user_points = calculatePoints(user_deed_history);
 
     $(".total_points").text(user_points);
-    $("#stars").html(individual_stars(user_points, 1));
-    $("#score").text(score(user_points));
+    $("#stars").html(userStars(user_points, 1));
+    $("#returnLabel").text(returnLabel(user_points));
 
     /*Load User Overview into page, this loop prints to DOM in chronological order the last 6 deeds completed*/
     $.each(user_deed_history.slice(-6) , function(element){ // fill in deeds table
         $("#deeds_overview").prepend(
             "<div class='deed " + user_gender +"'>" +
             "<img src='img/deeds/"+ this.deed +".png'>" +
-            "<h3 class='title'>" + user_information.first_name + " " + deed_description(this.deed) + "</h3>" +
+            "<h3 class='title'>" + user_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
             "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by +" link_white'>" + getFirstname(this.endorsed_by) + "</span> <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
-            "<h4 class='points'><b>+"+ deed_points(this.deed)+" points</b></h4>" +
+            "<h4 class='points'><b>+"+ deedPoints(this.deed)+" points</b></h4>" +
             "</div>"
         )
     });
@@ -156,8 +154,8 @@ function resetReviewPointsWindow() { // resets review points window
             $("#review_list").prepend(
                 "<div class='wakashu pending clickable' id='"+ this.deed +"'>" +
                 "<img src='img/deeds/"+ deed_id +".png'>" +
-                "<h3 class='title'>" + getFirstname(this.username) + " " + deed_description(deed_id) + "</h3>" +
-                "<h4 class='points'><b>"+ deed_points(deed_id) +" points</b></h4>" +
+                "<h3 class='title'>" + getFirstname(this.username) + " " + deedDescription(deed_id) + "</h3>" +
+                "<h4 class='points'><b>"+ deedPoints(deed_id) +" points</b></h4>" +
                 "</div>"
             )
         }

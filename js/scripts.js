@@ -7,6 +7,10 @@
 * All scripts shared among all pages that make the main functionalities of the webapp.
 */
 
+/**
+ * These three functions redirect to corresponding view when clicking on a user profile link:
+ * profile.html, partner.html or anon_user.html accordingly
+ */
 $(document).on('click','.link_profile',function(){
     window.location.href = "profile.html";
 });
@@ -23,7 +27,10 @@ $(document).on('click','.link_anon',function(){
     window.location.href = "anon_user.html";
 });
 
-function individual_stars (points, size){
+function userStars (points, size){
+    /**This method calculates individual starts based on points and returns
+     * the corresponding amount of starts to print into DOM. The size of the stars is given
+     * by the argument size */
     var stars = "";
 
     if (points < 1000) {
@@ -49,6 +56,7 @@ function individual_stars (points, size){
 }
 
 function returnStars (number, size){
+    /**This method returns a number of stars of a given size */
     switch (size){
         case(0):
             return ("<i class='fa fa-star fa stars'></i> ").repeat(number); // small stars
@@ -59,32 +67,34 @@ function returnStars (number, size){
     }
 }
 
-function score (points){
-    var score = "";
+function returnLabel (points){
+    /**This method returns the corresponding label to print to DOM, given an amount of points */
+    var label = "";
 
     if (points < 1000) {
-        score = "a lice-infested";
+        label = "a lice-infested";
     } else {
         if (points < 4000){
-            score = "a lousy";
+            label = "a lousy";
         }else {
             if (points < 7000){
-                score = "an average";
+                label = "an average";
             }else {
                 if (points < 10000){
-                    score = "an excellent";
+                    label = "an excellent";
                 } else {
                     if (points >= 10000){
-                        score = "an amazing";
+                        label = "an amazing";
                     }
                 }
             }
         }
     }
-    return score;
+    return label;
 }
 
-function deed_description (deed){
+function deedDescription (deed){
+    /**Given an index as argument, this method returns the deed's description from the DB */
     var description = "";
     $.each(DEEDS_TABLE, function(element){
         if (this.deed == deed){
@@ -95,7 +105,8 @@ function deed_description (deed){
     return description;
 };
 
-function deed_points (deed){
+function deedPoints (deed){
+    /**Given an index as argument, this method returns the deed's points from the DB */
     var points = "";
     $.each(DEEDS_TABLE, function(element){
         if (this.deed == deed){
@@ -107,6 +118,7 @@ function deed_points (deed){
 };
 
 function getFirstname (username){
+    /**Given an username as argument, this method returns the first name of from the DB */
     var first_name = "";
     $.each(INFORMATION_TABLE, function(element){
         if (this.username == username){
@@ -118,6 +130,7 @@ function getFirstname (username){
 };
 
 function getGender (index){
+    /**Given an index denoting a gender, this method returns the label as a String */
     switch(index) {
         case 0:
             return "hasbandu";
@@ -129,7 +142,8 @@ function getGender (index){
 }
 
 function formatDate (date) {
-    /* Returns formatted date as follows: "2018/03/19 at 21:00:00" */
+    /**Returns formatted date as follows:  YYYY/MM/DD at 19:30 hs
+     * e.g.: "2018/03/19 at 21:00:00 hs" */
     //alert(date);
     var date = new Date(date);
     var dd = date.getDate();
@@ -145,7 +159,7 @@ function formatDate (date) {
 }
 
 function formatMonth (index){
-
+    /** Given an index denoting a month of the year, returns corresponding label as string */
     switch (index){
         case 0:
             return "January";
@@ -175,21 +189,35 @@ function formatMonth (index){
 }
 
 function timeTogether (start_date, finish_date){
-
+    /** Given the start and finish date of a relationship as an argument, this method calculates
+     * and returns the time together in the relationship. Ongoing relationships have today's date
+     * as finish date*/
     var start = new Date(start_date);
     var finish = new Date(finish_date);
 
-    var totalyears = finish.getFullYear() - start.getFullYear();
-    var totalmonths = finish.getMonth() - start.getMonth();
-    var totaldays = finish.getDate() - start.getDate();
+    var total_years = finish.getFullYear() - start.getFullYear();
+    var total_months = finish.getMonth() - start.getMonth();
+    var total_days = finish.getDate() - start.getDate();
 
-    return (totalyears + " years " + totalmonths + " months " + " and " + totaldays + " days" );
+    return (total_years + " years " + total_months + " months " + " and " + total_days + " days" );
 }
 
-function updatePoints (pointsArray){
+function calculatePoints (deeds_array){
+    /** Given an array of deeds as argument, this method calculates the total points of all
+     * deeds contain in the array */
+    var points = 0;
+    $.each(deeds_array, function(element){ // calculate points
+        points += deedPoints(this.deed);
+    });
+    return points;
+}
+
+function updatePoints (deeds_array){
+    /** Given an array of deeds as argument, this method calculates the total points of all
+     * deeds contain in the array */
     var total_points = 0;
 
-    pointsArray.forEach(function(item) {
+    deeds_array.forEach(function(item) {
 
         $.each(DEEDS_TABLE, function(element){
 
@@ -203,10 +231,12 @@ function updatePoints (pointsArray){
     return total_points;
 }
 
-function updatePointsNonce (pointsArray){
+function updatePointsNonce (deeds_array){
+    /** Given an array of deeds as argument, this method calculates the total points of all
+     * deeds contain in the array considering a nonce concatenated on each deed (requested points) */
     var total_points = 0;
 
-    pointsArray.forEach(function(item) {
+    deeds_array.forEach(function(item) {
 
         var deed_id = Math.floor(item / 1000000); // eliminate nonce, return real deed id, before calculating points
         $.each(DEEDS_TABLE, function(element){
@@ -221,10 +251,11 @@ function updatePointsNonce (pointsArray){
     return total_points;
 }
 
-function checkRepeated (deed, pointsArray){
-
+function checkRepeated (deed, deeds_array){
+    /** Given a deed index and an array of deeds as argument, this method returns true if the deed
+     * is already contained in the given array and false otherwise */
     var multiplier = 1;
-    pointsArray.forEach(function(item) {
+    deeds_array.forEach(function(item) {
         if(deed == item){
             multiplier += 1;
         }
@@ -233,14 +264,17 @@ function checkRepeated (deed, pointsArray){
     return multiplier;
 }
 
-function activeRelationship (username_A, username_B){
-    if (getSO(username_A) == username_B){
+function activeRelationship (username_a, username_b){
+    /** Given two usernames as argument, this method returns true if both users are in an active
+     * relationship and false otherwise */
+    if (getSO(username_a) == username_b){
         return true;
     }
 }
 
-
 function hasSO (username){
+    /** Given a username as argument, this method returns true if the user is in an active
+     * relationship and false otherwise */
     var result = false;
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
         if (this.A == username || this.B == username){
@@ -253,6 +287,7 @@ function hasSO (username){
 }
 
 function getSO (username){
+    /** Given a username as argument, this method returns the SO (significant other) username */
     var so_username = null;
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
         if ((this.A == username || this.B == username) && this.date_ended == null){
@@ -266,31 +301,35 @@ function getSO (username){
     return so_username;
 }
 
-function getRelationshipStartDate (username_A, username_B){
-    var startDate = null;
+function getRelationshipStartDate (username_a, username_b){
+    /** Given two usernames as argument, this method returns the date the relationship started */
+    var start_date = null;
 
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
-        if ((this.A == username_A && this.B == username_B) || (this.B == username_A && this.A == username_B)){
-            startDate = this.date_started;
+        if ((this.A == username_a && this.B == username_b) || (this.B == username_a && this.A == username_b)){
+            start_date = this.date_started;
         }
     });
-    return (new Date (startDate));
+    return (new Date (start_date));
 }
 
-function getRelationshipEndDate (username_A, username_B){
-    var endDate = null;
+function getRelationshipEndDate (username_a, username_b){
+    /** Given two usernames as argument, this method returns the date the relationship ended */
+    var end_date = null;
 
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
-        if ((this.A == username_A && this.B == username_B) || (this.B == username_A && this.A == username_B)){
+        if ((this.A == username_a && this.B == username_b) || (this.B == username_a && this.A == username_b)){
             if (this.date_ended == null){
-                endDate = this.date_ended;
+                end_date = this.date_ended;
             }
         }
     });
-    return (new Date (endDate));
+    return (new Date (end_date));
 }
 
 function getSOHistory (username){
+    /** Given a username as argument, this method returns an array containing the the usernames of
+     * all SO that were ever in a relationship with the input username */
     var so_history = [];
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
         if ((this.A == username || this.B == username) && this.date_ended != null){
@@ -305,6 +344,8 @@ function getSOHistory (username){
 }
 
 function getUserInfo (username){
+    /** Given a username as argument, this method returns a JS objects containing all personal
+     * information of the user */
     var information = null;
     $.each(INFORMATION_TABLE, function(element){
         if (this.username == username){
@@ -315,59 +356,60 @@ function getUserInfo (username){
 }
 
 function getUserDeeds(username) {
-    var userDeeds = [];
+    /** Given a username as argument, this method returns an array containing all deeds
+     * done by the user */
+    var user_deeds = [];
     $.each(SESSION_HISTORY_TABLE, function(element){ // fill in deeds table
         if (this.username == username && this.date != null && this.date != -1){ // find more elegant solution
-            userDeeds.push(this)
+            user_deeds.push(this)
         }
     });
     //alert(JSON.stringify(user_deeds));
-    return userDeeds;
+    return user_deeds;
 }
 
 function getUserPoints (username) {
-    var userDeeds = getUserDeeds(username);
-    points = calculatePoints(userDeeds);
-    return points;
+    /** Given a username as argument, this method returns the entire points given by endorsed deeds */
+    var user_deeds = getUserDeeds(username);
+    return calculatePoints(user_deeds);
 }
 
-function getRelationshipDeeds(username_A, username_B,) {
-    var relationshipDeeds = [];
+function getRelationshipDeeds(username_a, username_b,) {
+    /** Given two usernames as argument, this method returns an array containing all deeds
+     * done by both users in a relationship */
+    var relationship_deeds = [];
     $.each(SESSION_HISTORY_TABLE, function(element){ // fill in deeds table
 
-        if (((this.username == username_A && this.endorsed_by == username_B) || (this.username == username_B && this.endorsed_by == username_A)) && (this.date != -1 && this.date != null)){// find more elegant solution
-            relationshipDeeds.push(this)
+        if (((this.username == username_a && this.endorsed_by == username_b) || (this.username == username_b && this.endorsed_by == username_a)) && (this.date != -1 && this.date != null)){// find more elegant solution
+            relationship_deeds.push(this)
         }
     });
-    return relationshipDeeds;
+    return relationship_deeds;
 }
 
-function calculatePoints(deeds_array) {
-    var points = 0;
-    $.each(deeds_array, function(element){ // calculate points
-        points += deed_points(this.deed);
-    });
-    return points;
-}
 
-function calculatePointsInRelationship(username, deeds_array) {
+function getUsersPoints(username, deedsArray) {
+    /** Given a username and an array of deeds as argument, this method returns the total
+     * points given by to the input username from the deeds array */
     var points = 0;
-    $.each(deeds_array, function(element){ // calculate points
+    $.each(deedsArray, function(element){ // calculate points
         if (this.username == username){
-            points += deed_points(this.deed);
+            points += deedPoints(this.deed);
         }
     });
     return points;
 }
 
 function percentage (points, total_points){
+    /** Given a number of points from a total of points, returns the percentage */
     if (total_points == 0){
         return 0;
     }
     return Math.round(points * 100 / total_points);
 }
 
-function equality_rate (percentage_a, percentage_b){
+function equalityRate (percentage_a, percentage_b){
+    /** Given two percentages as argument, this method calculates the equality rate */
     var rate = 0;
 
     if ((percentage_a - percentage_b) == 0 || (percentage_b - percentage_a) == 0) {
@@ -378,35 +420,40 @@ function equality_rate (percentage_a, percentage_b){
     return rate;
 }
 
-function equality_difference (percentage_a, percentage_b) {
+function equalityDifference (percentage_a, percentage_b) {
+    /** Given two percentages as argument, this method calculates the equality difference */
     var difference = Math.abs(percentage_a - percentage_b);
     return difference;
 }
 
-function relationshipStars (equality_difference, stars_size) {
-    var relationshipStars = "";
+function relationshipStars (equality_difference, size) {
+    /**This method calculates relationship starts based on equality difference and returns
+     * the corresponding amount of starts to print into DOM. The size of the stars is given
+     * by the argument size */
+    var relationship_stars = "";
 
     if (equality_difference > 70){
-        relationshipStars = returnStars(1,stars_size);
+        relationship_stars = returnStars(1,size);
     } else {
         if (equality_difference > 50){
-            relationshipStars = returnStars(2,stars_size);
+            relationship_stars = returnStars(2,size);
         } else {
             if (equality_difference > 30){
-                relationshipStars = returnStars(3,stars_size);
+                relationship_stars = returnStars(3,size);
             } else {
                 if (equality_difference > 10){
-                    relationshipStars = returnStars(4,stars_size);
+                    relationship_stars = returnStars(4,size);
                 } else {
-                    relationshipStars = returnStars(5,stars_size);
+                    relationship_stars = returnStars(5,size);
                 }
             }
         }
     }
-    return relationshipStars;
+    return relationship_stars;
 }
 
-function relationshipVeredict (equality_difference) {
+function relationshipLabel (equality_difference) {
+    /**This method returns the corresponding label to print to DOM, given an amount the equality difference */
     var relationshipVeredict = "";
     if (equality_difference > 70){
         relationshipVeredict = "a pretty lousy";

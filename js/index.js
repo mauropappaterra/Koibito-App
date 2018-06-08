@@ -10,16 +10,16 @@
 
 /*Login Scripts*/
 function loginScript (login_data){
-    var username = login_data.user_name.value; //"andrea_wakashu";//"adam_1990";
-    var password = login_data.password.value; //"thereIsALightThatNeverGoesOut#!";//"godsavesevasdog";
+    var username = login_data.user_name.value; // "adam_1990";
+    var password = login_data.password.value; // "godsavesevasdog";
     var exist = false;
 
     //alert("Login in as " + username + " with password " + password);
 
     $.each(USER_TABLE, function(element){
-        if (this.username == username){
+        if (this.username == username){ // check if username exists
             exist = true;
-            if (this.password == password){
+            if (this.password == password){ // check if password matches
                 //alert("SUCCESS! Username and password match!\n" + JSON.stringify(this));
                 localStorage.setItem("login_data", JSON.stringify(this));
                 window.location.replace("profile.html");
@@ -29,18 +29,10 @@ function loginScript (login_data){
             }
         }
     });
-
     if (!exist){
         alert ("ERROR! Username is not registered in Koibito")
     }
-
 };
-
-
-/*Language Translation index*/
-if (localStorage.getItem("index") == null){
-    localStorage.setItem("index",0)
-}
 
 /*Pop up windows*/
 $("#login_button").click(function() {
@@ -64,10 +56,14 @@ $(".close").click(function() {
     $("#signupWindow").addClass("hidden");
 });
 
+/*Language Translation index*/
+if (localStorage.getItem("index") == null){
+    localStorage.setItem("index",0)
+}
+
 function translate (index) {
     $("#page_title").text(page_title[index]);
     $("#mission").text(mission[index]);
     $("#login_button").text(login_button[index]);
     $("#signup_button").text(signup_button[index]);
-
 }

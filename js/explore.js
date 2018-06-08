@@ -29,8 +29,8 @@ if (login_data == null){
                 "<div class='user_profile " + getGender(user_info.gender) + " clickable' id='"+ user_info.username +"'>" +
                 "<h3 class='center'>"+ user_info.first_name +"</h3>" +
                 "<img src='img/users/"+ user_info.username +".jpg'>" +
-                "<div class='center'>" + individual_stars(user_points,0) +
-                "<p><b>" + user_info.first_name + " is "+ score(user_points)+ " "+ getGender(user_info.gender)+"!</b></p>" +
+                "<div class='center'>" + userStars(user_points,0) +
+                "<p><b>" + user_info.first_name + " is "+ returnLabel(user_points)+ " "+ getGender(user_info.gender)+"!</b></p>" +
                 "</div>" +
                 "</div>"
             )
@@ -44,3 +44,12 @@ $(document).on('click','.user_profile',function(){
     localStorage.setItem("anon_username", profile_id);
     window.location.href = "anon_user.html";
 });
+
+/*Language Translation index*/
+if (localStorage.getItem("index") == null){
+    localStorage.setItem("index",0)
+}
+
+function translate (index) {
+    $("#page_title").text(page_title[index]);
+}
