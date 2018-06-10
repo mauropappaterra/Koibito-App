@@ -121,11 +121,25 @@ function getAllUsers(){
     numberOfUsers = users.length;
 }
 
+function findPartnerName(userInfo){
+
+    if(userInfo.user_A == readCookie("username")){
+        return userInfo.user_B;
+    }
+    
+    return userInfo.user_A;
+}
+
 
 function insertInformation(){
     
-    // Getting Partners Name
-    // var tempUserName = document.cookie.split(",");
+    //Call the function to add the partner of the user 
+    let partnerinfo = queryUserRelationship(readCookie("username"));
+    var partnerUserName = findPartnerName(partnerinfo[0]);
+
+    //Add partner name to the cookies
+    document.cookie = "partner="+partnerUserName+";";
+
 
     /**************************************** Get User Information ******************************************/
     let userInformartion = queryUserInformation(readCookie("username"));  // Login User

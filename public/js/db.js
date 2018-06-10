@@ -8,7 +8,7 @@ let config = {
 	user: `${collections}/user`,
 	userInfo: `${collections}/userInfo`,
 	deedsHistory: `${collections}/deedsHistory`,
-	relations: `${collections}/relations`,
+	relations: `${collections}/relationships`,
 	deeds: `${collections}/deeds`
 }
 
@@ -81,10 +81,6 @@ function getUser(user_name) {
 	xmlHttp.send(null);
 	return xmlHttp.responseText;
 }
-/*** Usage example ****/
-//let UserName= getUser(document.cookie); 
-//console.log(UserName);//dummy data fetch....
-
 
 
 //***************************** Get User Information based on UserNamename  *****************************/
@@ -94,6 +90,7 @@ function queryUserInformation(user_name) {
 	let xmlHttp = new XMLHttpRequest();
 	xmlHttp.open("GET", url, false); // false for synchronous request
 	xmlHttp.send(null);
+
 	return JSON.parse(xmlHttp.responseText);
 
 }
@@ -101,33 +98,31 @@ function queryUserInformation(user_name) {
 //***************************** Get User RelationShip based on UserNamename  *****************************/
 //link to full documentation: http://docs.mlab.com/data-api/
 function queryUserRelationship(user_name) {
-	var url = `${config.relations}?q={"username":"${user_name}"}&apiKey=${APIKey}`
+	var url = `${config.relations}?q={ $or : [ {"user_A":"${user_name}"}, {"user_B":"${user_name}"} ] }&apiKey=${APIKey}`
 
 	let xmlHttp = new XMLHttpRequest();
 	xmlHttp.open("GET", url, false); // false for synchronous request
 	xmlHttp.send(null);
-	
-	let userRelation = JSON.parse(xmlHttp.responseText);
 
-	/*Check for relationShip Status*/
-    if (userRelation.B){ //relationshiop exists
-    	var tempUserName = document.cookie.split(",");
-    	UserDetailsArray[0] = tempUserName[0];
-    	UserDetailsArray[1] = userRelation.B;
+	// /*Check for relationShip Status*/
+    // if (userRelation.B){ //relationshiop exists
+    // 	var tempUserName = document.cookie.split(",");
+    // 	UserDetailsArray[0] = tempUserName[0];
+    // 	UserDetailsArray[1] = userRelation.B;
 
-    	setCookie(document.cookie, 0);
-    	setCookie(UserDetailsArray, 60);
-    }
-    else{// delete theis statetement
-    	var tempUserName = document.cookie.split(",");
-    	UserDetailsArray[0] = tempUserName[0];
-    	UserDetailsArray[1] = 'eve4ever';
+    // 	setCookie(document.cookie, 0);
+    // 	setCookie(UserDetailsArray, 60);
+    // }
+    // else{// delete theis statetement
+    // 	var tempUserName = document.cookie.split(",");
+    // 	UserDetailsArray[0] = tempUserName[0];
+    // 	UserDetailsArray[1] = 'eve4ever';
 
-    	setCookie(document.cookie, 0);
-    	setCookie(UserDetailsArray, 60);
-    }
+    // 	setCookie(document.cookie, 0);
+    // 	setCookie(UserDetailsArray, 60);
+    // }
 
-    return userRelation;
+    return JSON.parse(xmlHttp.responseText);;
 }
 
 //***************************** Get User Deeds History based on UserNamename  *****************************/
@@ -251,73 +246,6 @@ function Logout(){
 	UserDetailsArray = [];
 	setCookie(document.cookie, 0);
 }
-
-
-
-
-
-
-
-/*Fetch and return the user Information --> UserInformation Table*/
-// function getUserInformation(){
-// 	var tempUserName = document.cookie.split(",");
-// 	let userInfo = queryUserInformation(tempUserName[0]);
-//     userInfo = JSON.parse(userInfo);
-//     return userInfo;
-// };
-
-/*Fetch and return the user Relationship --> UserRelationship Table*/
-// function getUserRelationship(){
-// 	var tempUserName = document.cookie.split(",");
-// 	let userRelation = queryUserRelationship(tempUserName[0]);
-//     userRelation = JSON.parse(userRelation);
-
-//     /*Check for relationShip Status*/
-//     if (userRelation.B){ //relationshiop exists
-//     	setCookie(document.cookie, 0);	//Delete cookie data
-//     	UserDetailsArray[1] = userRelation.B;
-//     	setCookie(UserDetailsArray, 60);
-//     	console.log("yes")
-//     }
-//     else{// delete theis statetement
-//     	console.log("no");
-//     	setCookie(document.cookie, 0);	
-//     	UserDetailsArray[1] = 'eve4ever';
-//     	setCookie(UserDetailsArray, 60);
-//     }
-
-//     return userRelation;
-// }
-
-/*Fetch and return the user Deeds --> UserDeeds Table*/
-// function getUserDeedsHistory(){
-// 	var tempUserName = document.cookie.split(",");
-// 	let userDeedsHistory = queryUserDeedsHistory(tempUserName[0]);
-//     userDeedsHistory = JSON.parse(userDeedsHistory);
-//     return userDeedsHistory;
-// }
-
-/*Fetch and return the List of Deeds  --> Deeds Table*/
-// function getDeedsList(){
-// 	let deedsList = queryDeedsList();
-//     deedsList = JSON.parse(deedsList);
-//     return deedsList;
-// }
-
-
-/**************************** Functions to fetch Information of the partner ********************************/
-
-// Get user Partner Information
-// function getUserPartnersInformation(){
-// 	var tempUserName = document.cookie.split(",");
-// 	//Uncomment
-// 	// let userInfo = queryUserInformation(tempUserName[1]);
-// 	let userInfo = queryUserInformation('eve4ever');
-//     userInfo = JSON.parse(userInfo);
-//     return userInfo;
-// };
-
-
 
 
 
