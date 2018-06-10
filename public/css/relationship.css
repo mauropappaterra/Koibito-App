@@ -8,6 +8,7 @@ figure{
     width: auto;
     height: auto;
     overflow: unset;
+    height:492px
 }
 .center{
   color: #000;
@@ -29,12 +30,13 @@ a{
 }
 h1{
 	margin:0px;
-	padding:20px 20px 10px 20px;
+	/* padding:20px 20px 10px 20px; */
 	font-size:34px;
-	color:#333;
+	/* color:#333; */
     text-shadow:1px 1px 1px #fff;
 	text-align:left;
-	font-weight:400;
+    font-size: 3rem;
+    max-width: 35rem;
     text-align:center;
 }
 h1 span{
@@ -241,6 +243,9 @@ height: auto;
     min-width: 270px;
     width: 278px;
     height: 230px;
+}
+.card a{
+    padding-right: 0px;
 }
 
 @media screen and (max-width: 600px) {
