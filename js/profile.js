@@ -18,6 +18,9 @@ var redo = []; // keep track of undone processes for redo functionality
 var user_deed_history = []; // retrieve all user's deeds from HISTORY_TABLE
 var user_points = 0; // calculate points
 
+var binding_requests = [];
+var binding_index = 0;
+
 if (login_data == null){
     window.location.href = "index.html";
 } else {
@@ -53,6 +56,16 @@ if (login_data == null){
         $("#review_points").addClass("hidden");
         $(".link_so").addClass("hidden");
         $("#relationship_tab").addClass("hidden"); // this tab should be disable
+
+        // Check for binding requests!
+        binding_requests = getBindingRequests(login_data.username);
+        //alert(binding_requests.toString());
+        if (binding_requests.length > 0){
+            //alert ("You got binding requests from: " + binding_requests.toString());
+            loadProspectWindow(binding_requests[binding_index])
+        } /*else {
+            alert ("You got no binding requests!");
+        }*/
     }
     /*Retrieve all users deeds from HISTORY_TABLE and calculate points, print to DOM*/
     user_deed_history = getUserDeeds(login_data.username);
@@ -137,7 +150,6 @@ $("#redo").click(function(){
 
     if (redo.length < 1){
         $("#redo").addClass("greyed_out");
-
     }
     $("#undo").removeClass("greyed_out");
     $("#resetPoints").removeClass("greyed_out");
@@ -171,9 +183,9 @@ $("#submitRequest").click(function(){
     }
 });
 
-$(".link_profile").click(function(){
+/*$(".link_profile").click(function(){
     alert("this is happening!");
-});
+});*/
 
 $("#resetPoints").click(function(){
     resetRequestPointsWindow();
@@ -348,6 +360,99 @@ $(".view_partner").click(function() {
     window.location.href = "partner.html";
 });
 
+function loadProspectWindow (username){
+    var prospect_information = getUserInfo(username);
+    var prospect_points = getUserPoints(prospect_information.username);
+
+    $(".prospectName").html(prospect_information.first_name);
+    $("#prospectPicture").attr("src","img/users/"+ prospect_information.username +".jpg");
+    $("#prospectPicture").addClass("link_anon " + prospect_information.username + " prospectPicture");
+    $("#prospectStars").html(userStars(prospect_points,1));
+    $("#prospectLabel").html(returnLabel(prospect_points));
+    $("#prospectGender").html(getGender(prospect_information.gender));
+
+    resetClasses();
+
+    $("#bindingWindow").addClass(getGender(prospect_information.gender));
+    $("#acceptBinding").addClass(getGender(prospect_information.gender));
+    $("#declineBinding").addClass(getGender(prospect_information.gender));
+    $("#decideLater").addClass(getGender(prospect_information.gender));
+
+    $("#bindingWindow").removeClass("hidden");
+    $("#overlay").removeClass("hidden");
+}
+
+function resetClasses(){
+    $("#bindingWindow").removeClass('hasbandu');
+    $("#acceptBinding").removeClass('hasbandu');
+    $("#declineBinding").removeClass('hasbandu');
+    $("#decideLater").removeClass('hasbandu');
+
+    $("#bindingWindow").removeClass('waifu');
+    $("#acceptBinding").removeClass('waifu');
+    $("#declineBinding").removeClass('waifu');
+    $("#decideLater").removeClass('waifu');
+
+    $("#bindingWindow").removeClass('wakashu');
+    $("#acceptBinding").removeClass('wakashu');
+    $("#declineBinding").removeClass('wakashu');
+    $("#decideLater").removeClass('wakashu');
+}
+
+$("#decideLater").click(function() {
+    nextProspect();
+});
+
+function nextProspect() {
+    binding_index += 1;
+
+    if (binding_index >= binding_requests.length){
+        binding_index = 0;
+        $("#bindingWindow").addClass("hidden");
+        $("#overlay").addClass("hidden");
+    } else {
+        loadProspectWindow(binding_requests[binding_index])
+    }
+}
+
+$("#acceptBinding").click(function() {
+    //alert("Accept binding to " + binding_requests[binding_index]);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == login_data.username && this.date_started == null){
+            if (this.A == binding_requests[binding_index]){
+                this.date_started = new Date(); // start relationship
+            } else {
+                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this)
+                SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
+            }
+        }
+    });
+
+    binding_requests = [];
+    binding_index = 0;
+
+    //**SAVE TO DATABASE HERE**
+    sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
+    alert("Congratulations! Your profiles are now bind!");
+    location.reload();
+});
+
+$("#declineBinding").click(function() {
+    //alert("Decline binding to " + binding_requests[binding_index]);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == login_data.username && this.A == binding_requests[binding_index] && this.date_started == null){
+            var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this);
+            SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
+            return false;
+        }
+    });
+    binding_requests.splice(binding_index,1);
+    //alert(binding_requests.toString());
+    //**SAVE TO DATABASE HERE**
+    sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
+    nextProspect();
+});
+
 $("#logoff").click(function() {
     localStorage.clear();
     window.location.href = "index.html";
@@ -370,6 +475,8 @@ $(".close").click(function() {
     $("#overlay").addClass("hidden");
     $("#requestWindow").addClass("hidden");
     $("#reviewWindow").addClass("hidden");
+    $("#bindingWindow").addClass("hidden");
+
 });
 
 /*Language Translation index*/
