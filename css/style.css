@@ -89,9 +89,9 @@
 }
 
 .selected{
-    background-color: #fb8d81;
-    border-color: #a20d0b; /* same as wakashu points */
-}
+     background-color: #fb8d81;
+     border-color: #a20d0b; /* same as wakashu points */
+ }
 
 .stars {
     color: #ffd90d;

@@ -243,7 +243,7 @@ var RELATIONSHIPS_TABLE = [
         "date_started": new Date(2006, 6, 1),
         "date_ended": new Date(2016, 6, 1),
     },
-    {
+    {// change all these below!
         "A": "albert1978",
         "B": "carlottaMestre",
         "date_started": new Date(2000, 6, 1),
@@ -252,7 +252,7 @@ var RELATIONSHIPS_TABLE = [
     {
         "A": "charlybrown1974",
         "B": "angeles4you",
-        "date_started": null, // relationships with requested binding have no start date
+        "date_started": new Date(2000, 6, 1),
         "date_ended": null,
     }
 ];
@@ -437,10 +437,10 @@ var HISTORY_TABLE = [
         "date": new Date(2018, 6, 20),
     },
     {
-        "username":"adam_1990",
-        "endorsed_by":"eve4ever",
-        "deed":"9",
-        "date":"2018-06-01T04:44:09.781Z"
+         "username":"adam_1990",
+         "endorsed_by":"eve4ever",
+         "deed":"9",
+         "date":"2018-06-01T04:44:09.781Z"
     },
     {
         "username":"adam_1990",
