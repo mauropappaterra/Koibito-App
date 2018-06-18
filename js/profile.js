@@ -183,9 +183,9 @@ $("#submitRequest").click(function(){
     }
 });
 
-$(".link_profile").click(function(){
+/*$(".link_profile").click(function(){
     alert("this is happening!");
-});
+});*/
 
 $("#resetPoints").click(function(){
     resetRequestPointsWindow();
@@ -366,7 +366,7 @@ function loadProspectWindow (username){
 
     $(".prospectName").html(prospect_information.first_name);
     $("#prospectPicture").attr("src","img/users/"+ prospect_information.username +".jpg");
-    $("#prospectPicture").addClass("prospectPicture");
+    $("#prospectPicture").addClass("link_anon " + prospect_information.username + " prospectPicture");
     $("#prospectStars").html(userStars(prospect_points,1));
     $("#prospectLabel").html(returnLabel(prospect_points));
     $("#prospectGender").html(getGender(prospect_information.gender));
@@ -415,7 +415,6 @@ function nextProspect() {
     }
 }
 
-
 $("#acceptBinding").click(function() {
     //alert("Accept binding to " + binding_requests[binding_index]);
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
@@ -453,7 +452,6 @@ $("#declineBinding").click(function() {
     sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
     nextProspect();
 });
-
 
 $("#logoff").click(function() {
     localStorage.clear();

@@ -37,6 +37,7 @@ if (anon_username == null){ // if there is no user to display, return to profile
         if (checkBindingRequested(anon_information.username, user_information.username)){
             $("#bind").append(
                 "<i class='fa fa-heart fa-3x red'></i>Respond to Request<br>");
+            $("#bind").addClass("needs_response");
         }else {
             if (hasSO(anon_information.username)){
                 $("#bind").append(
@@ -134,12 +135,53 @@ $("#cancelBind").click(function(){
 
 $("#bind").click(function() {
     $("#overlay").removeClass("hidden");
-    $("#bindWindow").removeClass("hidden")
+
+    if ($("#bind").hasClass("needs_response")){ // if anon already requested binding load corresponding window
+        $("#reviewBindingWindow").removeClass("hidden");
+    } else {
+        $("#bindWindow").removeClass("hidden");
+    }
+});
+
+$("#acceptBinding").click(function() {
+    //alert("Accept binding to " + anon_username);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == login_data.username && this.date_started == null){
+            if (this.A == anon_username){
+                this.date_started = new Date(); // start relationship
+            } else {
+                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this)
+                SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
+            }
+        }
+    });
+    //**SAVE TO DATABASE HERE**
+    sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
+    alert("Congratulations! Your profiles are now bind!");
+
+    window.location.href = "partner.html";
+});
+
+$("#declineBinding").click(function() {
+    //alert("Decline binding to " + anon_username);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == login_data.username && this.A == anon_username && this.date_started == null){
+            var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this);
+            SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
+            return false;
+        }
+    });
+    //**SAVE TO DATABASE HERE**
+    sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
+    alert("You have rejected "+ anon_information.first_name +" bind request!");
+
+    location.reload();
 });
 
 $(".close").click(function() {
     $("#overlay").addClass("hidden");
-    $("#bindWindow").addClass("hidden")
+    $("#bindWindow").addClass("hidden");
+    $("#reviewBindingWindow").addClass("hidden");
 });
 
 /*Language Translation index*/
