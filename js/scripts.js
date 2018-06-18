@@ -252,8 +252,8 @@ function updatePointsNonce (deeds_array){
 }
 
 function checkRepeated (deed, deeds_array){
-    /** Given a deed index and an array of deeds as argument, this method returns true if the deed
-     * is already contained in the given array and false otherwise */
+    /** Given a deed index and an array of deeds as argument, this method returns the number of times
+     * the deed is contained */
     var multiplier = 1;
     deeds_array.forEach(function(item) {
         if(deed == item){
@@ -474,4 +474,3 @@ function relationshipLabel (equality_difference) {
     }
     return relationshipVeredict;
 }
-

@@ -10,7 +10,8 @@
 
 /*Retrieve login information from localStorage*/
 var login_data = JSON.parse(localStorage.getItem("login_data"));
-var endorsed_deeds = []; // keep track of the endorsed deeds
+var endorsed_deeds = []; // keep track of the endorsed deeds, also used for undo functionality
+var redo = []; // keep track of undone processes for redo functionality
 
 //alert (JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
 if (!hasSO(login_data.username)){
@@ -67,10 +68,17 @@ $(document).on('click','.deed',function(){
     endorsed_deeds.push(this.id);
     //alert(endorsed_deeds.toString());
     $("#total_points").text(updatePoints(endorsed_deeds));
+
+    redo = []; // empty redo array every time a new item is added!
+    $("#redo").addClass("greyed_out");
+    $("#undo").removeClass("greyed_out");
+    $("#resetPoints").removeClass("greyed_out");
+    $("#submitPoints").removeClass("greyed_out");
 });
 
 function resetGivePointsWindow () { // resets give points window
     endorsed_deeds = [];
+    redo = [];
     $("#deeds_list").empty();
 
     /*Load Deeds list into page*/
@@ -85,8 +93,65 @@ function resetGivePointsWindow () { // resets give points window
         )
     });
 
+    $("#resetPoints").addClass("greyed_out");
+    $("#submitPoints").addClass("greyed_out");
+    $("#undo").addClass("greyed_out");
+    $("#redo").addClass("greyed_out");
+
+
     $("#total_points").text(0); // print to DOM
 }
+
+/*Undo/Redo Functions*/
+
+$("#undo").click(function(){
+    var undo_this = endorsed_deeds.pop();
+    //alert("Undoing last deed: " + undo_this);
+
+    // PRINT CHANGES TO DOM HERE
+    if (checkRepeated(undo_this, endorsed_deeds) > 1){
+        $("#" + undo_this).find(".multiplier").text("(x"+ (checkRepeated(undo_this, endorsed_deeds) - 1) +")");
+    } else {
+        $("#" + undo_this).removeClass("selected");
+        $("#" + undo_this).find(".multiplier").empty();
+    }
+
+    $("#total_points").text(updatePoints(endorsed_deeds));
+
+    if (endorsed_deeds.length < 1){
+        $("#undo").addClass("greyed_out");
+        $("#resetPoints").addClass("greyed_out");
+        $("#submitPoints").addClass("greyed_out");
+    }
+
+    redo.push(undo_this); // add undone deed to redo array
+    $("#redo").removeClass("greyed_out");
+});
+
+$("#redo").click(function(){
+    //alert("Redo array:\n" + redo.toString())
+    var redo_this = redo.pop();
+    //alert("Redoing last deed undone: " + redo_this);
+
+    // PRINT CHANGES TO DOM HERE
+    if (!($("#" + redo_this).hasClass("selected"))){
+        $("#" + redo_this).addClass("selected");
+    } else {
+        $("#" + redo_this).find(".multiplier").text("(x"+ checkRepeated(redo_this, endorsed_deeds) +")");
+    }
+    endorsed_deeds.push(redo_this); // add deed back to array
+
+    $("#total_points").text(updatePoints(endorsed_deeds));
+
+    if (redo.length < 1){
+        $("#redo").addClass("greyed_out");
+
+    }
+    $("#undo").removeClass("greyed_out");
+    $("#resetPoints").removeClass("greyed_out");
+    $("#submitPoints").removeClass("greyed_out");
+    //alert("Deeds Array:\n" + endorsed_deeds.toString());
+});
 
 $("#submitPoints").click(function(){
 

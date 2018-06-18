@@ -210,3 +210,8 @@
 .link_white:hover {
     color: red;
 }
+
+.greyed_out {
+    color: #858585;
+    pointer-events: none;
+}

@@ -375,7 +375,7 @@ var DEEDS_TABLE = [
     {
         "deed": 20,
         "category": "miscellaneous",
-        "description": "hacked into the Penthagon",
+        "description": "hacked into the Pentagon",
         "points": 150000,
     }
 
@@ -508,3 +508,5 @@ var SESSION_HISTORY_TABLE = JSON.parse(sessionStorage.getItem("SESSION_HISTORY_T
 var SESSION_RELATIONSHIPS_TABLE = JSON.parse(sessionStorage.getItem("SESSION_RELATIONSHIPS_TABLE"));
 var SESSION_USER_TABLE = JSON.parse(sessionStorage.getItem("SESSION_USER_TABLE"));
 var SESSION_INFORMATION_TABLE = JSON.parse(sessionStorage.getItem("SESSION_INFORMATION_TABLE"));
+
+/*FINISH LOADING DATA FROM SESSION STORAGE*/
