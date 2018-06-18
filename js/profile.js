@@ -11,18 +11,23 @@
 /*Retrieve login information from localStorage*/
 var login_data = localStorage.getItem("login_data");
 
-var requested_deeds = []; // keep track of the endorsed deeds
-var selected_deeds = []; // keep track of the pending deeds selected
+var requested_deeds = []; // keep track of the endorsed deeds, also used for undo functionality
+var selected_deeds = []; // keep track of the pending deeds selected, also used for undo functionality
+var redo = []; // keep track of undone processes for redo functionality
+
 var user_deed_history = []; // retrieve all user's deeds from HISTORY_TABLE
 var user_points = 0; // calculate points
+
+var binding_requests = [];
+var binding_index = 0;
 
 if (login_data == null){
     window.location.href = "index.html";
 } else {
     login_data = JSON.parse(login_data); // parse string back to JSON...
     user_information = getUserInfo(login_data.username);// ... and retrieve user information
-    alert("Log in as " + login_data.username);
-    alert(JSON.stringify(user_information));
+    //alert("Log in as " + login_data.username);
+    //alert(JSON.stringify(user_information));
 
     /*Load User and SO information into page*/
     $("#profile_picture").attr("src","img/users/"+ login_data.username +".jpg");
@@ -51,6 +56,16 @@ if (login_data == null){
         $("#review_points").addClass("hidden");
         $(".link_so").addClass("hidden");
         $("#relationship_tab").addClass("hidden"); // this tab should be disable
+
+        // Check for binding requests!
+        binding_requests = getBindingRequests(login_data.username);
+        //alert(binding_requests.toString());
+        if (binding_requests.length > 0){
+            //alert ("You got binding requests from: " + binding_requests.toString());
+            loadProspectWindow(binding_requests[binding_index])
+        } /*else {
+            alert ("You got no binding requests!");
+        }*/
     }
     /*Retrieve all users deeds from HISTORY_TABLE and calculate points, print to DOM*/
     user_deed_history = getUserDeeds(login_data.username);
@@ -86,6 +101,60 @@ $(document).on('click','.deed',function(){
     //alert(requested_deeds.toString());
     $("#total_points").text(updatePoints(requested_deeds));
 
+    redo = []; // empty redo array every time a new item is added!
+    $("#redo").addClass("greyed_out");
+    $("#undo").removeClass("greyed_out");
+    $("#resetPoints").removeClass("greyed_out");
+    $("#submitRequest").removeClass("greyed_out");
+});
+
+/*Undo/Redo Functions*/
+$("#undo").click(function(){
+    var undo_this = requested_deeds.pop();
+    //alert("Undoing last deed: " + undo_this);
+
+    // PRINT CHANGES TO DOM HERE
+    if (checkRepeated(undo_this, requested_deeds) > 1){
+        $("#" + undo_this).find(".multiplier").text("(x"+ (checkRepeated(undo_this, requested_deeds) - 1) +")");
+    } else {
+        $("#" + undo_this).removeClass("selected");
+        $("#" + undo_this).find(".multiplier").empty();
+    }
+
+    $("#total_points").text(updatePoints(requested_deeds));
+
+    if (requested_deeds.length < 1){
+        $("#undo").addClass("greyed_out");
+        $("#resetPoints").addClass("greyed_out");
+        $("#submitRequest").addClass("greyed_out");
+    }
+
+    redo.push(undo_this); // add undone deed to redo array
+    $("#redo").removeClass("greyed_out");
+});
+
+$("#redo").click(function(){
+    //alert("Redo array:\n" + redo.toString())
+    var redo_this = redo.pop();
+    //alert("Redoing last deed undone: " + redo_this);
+
+    // PRINT CHANGES TO DOM HERE
+    if (!($("#" + redo_this).hasClass("selected"))){
+        $("#" + redo_this).addClass("selected");
+    } else {
+        $("#" + redo_this).find(".multiplier").text("(x"+ checkRepeated(redo_this, requested_deeds) +")");
+    }
+    requested_deeds.push(redo_this); // add deed back to array
+
+    $("#total_points").text(updatePoints(requested_deeds));
+
+    if (redo.length < 1){
+        $("#redo").addClass("greyed_out");
+    }
+    $("#undo").removeClass("greyed_out");
+    $("#resetPoints").removeClass("greyed_out");
+    $("#submitRequest").removeClass("greyed_out");
+    //alert("Deeds Array:\n" + endorsed_deeds.toString());
 });
 
 $("#submitRequest").click(function(){
@@ -124,7 +193,7 @@ $("#resetPoints").click(function(){
 
 function resetRequestPointsWindow() { // resets give points window
     requested_deeds = [];
-
+    redo = [];
     $("#deeds_list").empty();
 
     /*Load Deeds list into page*/
@@ -139,32 +208,15 @@ function resetRequestPointsWindow() { // resets give points window
         )
     });
 
+    $("#redo").addClass("greyed_out");
+    $("#undo").addClass("greyed_out");
+    $("#resetPoints").addClass("greyed_out");
+    $("#submitRequest").addClass("greyed_out");
+
     $("#total_points").text(0);
 }
 
-
-function resetReviewPointsWindow() { // resets review points window
-    selected_deeds = [];
-    $("#review_list").empty();
-
-    /*Load points that need review*/
-    $.each(SESSION_HISTORY_TABLE , function(element){ // fill in deeds table
-        if (this.endorsed_by == user_information.username && this.date == null){
-            //alert(JSON.stringify(this))
-            var deed_id = Math.floor(this.deed / 1000000);  // eliminate nonce, return real deed id
-            $("#review_list").prepend(
-                "<div class='wakashu pending clickable' id='"+ this.deed +"'>" +
-                "<img src='img/deeds/"+ deed_id +".png'>" +
-                "<h3 class='title'>" + getFirstname(this.username) + " " + deedDescription(deed_id) + "</h3>" +
-                "<h4 class='points'><b>"+ deedPoints(deed_id) +" points</b></h4>" +
-                "</div>"
-            )
-        }
-    });
-
-    $("#selected_points").text(0);
-}
-
+/*All review points window functionalities*/
 $(document).on('click','.pending',function(){
     //alert("You have clicked on a  pending deed " + this.id);
     if (!($("#" + this.id).hasClass("selected"))){
@@ -176,6 +228,12 @@ $(document).on('click','.pending',function(){
     }
     //alert(selected_deeds.toString());
     $("#selected_points").text(updatePointsNonce(selected_deeds));
+
+    redo = []; // empty redo array every time a new item is selected!
+    $("#redoSelection").addClass("greyed_out");
+    $("#undoSelection").removeClass("greyed_out");
+    $("#acceptPoints").removeClass("greyed_out");
+    $("#declinePoints").removeClass("greyed_out");
 
 });
 
@@ -198,7 +256,7 @@ $("#acceptPoints").click(function(){
         });
         //**SAVE TO DATABASE HERE**
         sessionStorage.setItem("SESSION_HISTORY_TABLE", JSON.stringify(SESSION_HISTORY_TABLE));
-        alert("SUCCESS! You have accepted the selected requested points!");
+        alert("SUCCESS! You have accepted the requested points selected!");
         window.location.href = "profile.html";
     }
 });
@@ -222,16 +280,180 @@ $("#declinePoints").click(function(){
         //alert(JSON.stringify(SESSION_HISTORY_TABLE));
         //**SAVE TO DATABASE HERE**
         sessionStorage.setItem("SESSION_HISTORY_TABLE", JSON.stringify(SESSION_HISTORY_TABLE));
-        alert("SUCCESS! You have rejected the selected requested points!");
+        alert("SUCCESS! You have rejected the requested points selected!");
         window.location.href = "profile.html";
     }
-
 });
+
+/*Undo/Redo Functions*/
+
+$("#undoSelection").click(function(){
+    var undo_this = selected_deeds.pop();
+    //alert("Undoing last deed: " + undo_this);
+
+    // PRINT CHANGES TO DOM HERE
+    $("#" + undo_this).removeClass("selected");
+    $("#selected_points").text(updatePointsNonce(selected_deeds));
+
+    if (selected_deeds.length < 1){
+        $("#undoSelection").addClass("greyed_out");
+        $("#acceptPoints").addClass("greyed_out");
+        $("#declinePoints").addClass("greyed_out");
+    }
+
+    redo.push(undo_this); // add undone deed to redo array
+    $("#redoSelection").removeClass("greyed_out");
+});
+
+$("#redoSelection").click(function(){
+    //alert("Redo array:\n" + redo.toString())
+    var redo_this = redo.pop();
+    //alert("Redoing last deed undone: " + redo_this);
+
+    // PRINT CHANGES TO DOM HERE
+    $("#" + redo_this).addClass("selected");
+
+    selected_deeds.push(redo_this); // add deed back to array
+
+    $("#selected_points").text(updatePointsNonce(selected_deeds));
+
+    if (redo.length < 1){
+        $("#redoSelection").addClass("greyed_out");
+    }
+
+    $("#undoSelection").removeClass("greyed_out");
+    $("#acceptPoints").removeClass("greyed_out");
+    $("#declinePoints").removeClass("greyed_out");
+    //alert("Deeds Array:\n" + selected_deeds.toString());
+});
+
+function resetReviewPointsWindow() { // resets review points window
+    selected_deeds = [];
+    redo = [];
+    $("#review_list").empty();
+
+    /*Load points that need review*/
+    $.each(SESSION_HISTORY_TABLE , function(element){ // fill in deeds table
+        if (this.endorsed_by == user_information.username && this.date == null){
+            //alert(JSON.stringify(this))
+            var deed_id = Math.floor(this.deed / 1000000);  // eliminate nonce, return real deed id
+            $("#review_list").prepend(
+                "<div class='wakashu pending clickable' id='"+ this.deed +"'>" +
+                "<img src='img/deeds/"+ deed_id +".png'>" +
+                "<h3 class='title'>" + getFirstname(this.username) + " " + deedDescription(deed_id) + "</h3>" +
+                "<h4 class='points'><b>"+ deedPoints(deed_id) +" points</b></h4>" +
+                "</div>"
+            )
+        }
+    });
+
+    $("#redoSelection").addClass("greyed_out");
+    $("#undoSelection").addClass("greyed_out");
+    $("#acceptPoints").addClass("greyed_out");
+    $("#declinePoints").addClass("greyed_out");
+
+    $("#selected_points").text(0);
+}
 
 $(".view_partner").click(function() {
     //alert("Redirecting to partners profile now!");
     window.location.href = "partner.html";
 });
+
+function loadProspectWindow (username){
+    var prospect_information = getUserInfo(username);
+    var prospect_points = getUserPoints(prospect_information.username);
+
+    $(".prospectName").html(prospect_information.first_name);
+    $("#prospectPicture").attr("src","img/users/"+ prospect_information.username +".jpg");
+    $("#prospectPicture").addClass("prospectPicture");
+    $("#prospectStars").html(userStars(prospect_points,1));
+    $("#prospectLabel").html(returnLabel(prospect_points));
+    $("#prospectGender").html(getGender(prospect_information.gender));
+
+    resetClasses();
+
+    $("#bindingWindow").addClass(getGender(prospect_information.gender));
+    $("#acceptBinding").addClass(getGender(prospect_information.gender));
+    $("#declineBinding").addClass(getGender(prospect_information.gender));
+    $("#decideLater").addClass(getGender(prospect_information.gender));
+
+    $("#bindingWindow").removeClass("hidden");
+    $("#overlay").removeClass("hidden");
+}
+
+function resetClasses(){
+    $("#bindingWindow").removeClass('hasbandu');
+    $("#acceptBinding").removeClass('hasbandu');
+    $("#declineBinding").removeClass('hasbandu');
+    $("#decideLater").removeClass('hasbandu');
+
+    $("#bindingWindow").removeClass('waifu');
+    $("#acceptBinding").removeClass('waifu');
+    $("#declineBinding").removeClass('waifu');
+    $("#decideLater").removeClass('waifu');
+
+    $("#bindingWindow").removeClass('wakashu');
+    $("#acceptBinding").removeClass('wakashu');
+    $("#declineBinding").removeClass('wakashu');
+    $("#decideLater").removeClass('wakashu');
+}
+
+$("#decideLater").click(function() {
+    nextProspect();
+});
+
+function nextProspect() {
+    binding_index += 1;
+
+    if (binding_index >= binding_requests.length){
+        binding_index = 0;
+        $("#bindingWindow").addClass("hidden");
+        $("#overlay").addClass("hidden");
+    } else {
+        loadProspectWindow(binding_requests[binding_index])
+    }
+}
+
+
+$("#acceptBinding").click(function() {
+    //alert("Accept binding to " + binding_requests[binding_index]);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == login_data.username && this.date_started == null){
+            if (this.A == binding_requests[binding_index]){
+                this.date_started = new Date(); // start relationship
+            } else {
+                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this)
+                SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
+            }
+        }
+    });
+
+    binding_requests = [];
+    binding_index = 0;
+
+    //**SAVE TO DATABASE HERE**
+    sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
+    alert("Congratulations! Your profiles are now bind!");
+    location.reload();
+});
+
+$("#declineBinding").click(function() {
+    //alert("Decline binding to " + binding_requests[binding_index]);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == login_data.username && this.A == binding_requests[binding_index] && this.date_started == null){
+            var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this);
+            SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
+            return false;
+        }
+    });
+    binding_requests.splice(binding_index,1);
+    //alert(binding_requests.toString());
+    //**SAVE TO DATABASE HERE**
+    sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
+    nextProspect();
+});
+
 
 $("#logoff").click(function() {
     localStorage.clear();
@@ -255,6 +477,8 @@ $(".close").click(function() {
     $("#overlay").addClass("hidden");
     $("#requestWindow").addClass("hidden");
     $("#reviewWindow").addClass("hidden");
+    $("#bindingWindow").addClass("hidden");
+
 });
 
 /*Language Translation index*/

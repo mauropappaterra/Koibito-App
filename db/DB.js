@@ -243,7 +243,7 @@ var RELATIONSHIPS_TABLE = [
         "date_started": new Date(2006, 6, 1),
         "date_ended": new Date(2016, 6, 1),
     },
-    {// change all these below!
+    {
         "A": "albert1978",
         "B": "carlottaMestre",
         "date_started": new Date(2000, 6, 1),
@@ -252,7 +252,7 @@ var RELATIONSHIPS_TABLE = [
     {
         "A": "charlybrown1974",
         "B": "angeles4you",
-        "date_started": new Date(2000, 6, 1),
+        "date_started": null, // relationships with requested binding have no start date
         "date_ended": null,
     }
 ];
@@ -375,7 +375,7 @@ var DEEDS_TABLE = [
     {
         "deed": 20,
         "category": "miscellaneous",
-        "description": "hacked into the Penthagon",
+        "description": "hacked into the Pentagon",
         "points": 150000,
     }
 
@@ -437,10 +437,10 @@ var HISTORY_TABLE = [
         "date": new Date(2018, 6, 20),
     },
     {
-         "username":"adam_1990",
-         "endorsed_by":"eve4ever",
-         "deed":"9",
-         "date":"2018-06-01T04:44:09.781Z"
+        "username":"adam_1990",
+        "endorsed_by":"eve4ever",
+        "deed":"9",
+        "date":"2018-06-01T04:44:09.781Z"
     },
     {
         "username":"adam_1990",
@@ -508,3 +508,5 @@ var SESSION_HISTORY_TABLE = JSON.parse(sessionStorage.getItem("SESSION_HISTORY_T
 var SESSION_RELATIONSHIPS_TABLE = JSON.parse(sessionStorage.getItem("SESSION_RELATIONSHIPS_TABLE"));
 var SESSION_USER_TABLE = JSON.parse(sessionStorage.getItem("SESSION_USER_TABLE"));
 var SESSION_INFORMATION_TABLE = JSON.parse(sessionStorage.getItem("SESSION_INFORMATION_TABLE"));
+
+/*FINISH LOADING DATA FROM SESSION STORAGE*/

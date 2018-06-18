@@ -34,163 +34,182 @@
 </head>
 <body>
 
-    <!-- Your code starts here -->
+<!-- Your code starts here -->
 
-    <div class="row">
-        <div class="col-lg-3">
-            <h1>Koibito <i class="fa fa-heart fa-1x red"></i> App </h1>
+<div class="row">
+    <div class="col-lg-3">
+        <h1>Koibito <i class="fa fa-heart fa-1x red"></i> App </h1>
+    </div>
+
+    <div class="tabs col-lg-9">
+        <ul>
+            <li><a href="profile.html">My Profile</a></li>
+            <li id="relationship_tab"><a href="relationship.html">Relationship Stats</a></li>
+            <li><a href="history.html">Relationship History</a></li>
+            <li><a href="explore.html">Explore Profiles</a></li>
+            <li><a href="index.html" id="logoff"><i class="fa fa-user-times fa"></i>Log Out</a></li>
+        </ul>
+    </div>
+
+</div>
+
+<div class="row">
+
+    <div class="portrait col-lg-3 col-md-6  col-sm-12">
+        <img id= "profile_picture">
+    </div>
+
+    <div class="user_css col-lg-8 col-md-5 col-sm-11">
+        <h1><b> <span class="firstname"></span> <span class="lastname"></span></b></h1>
+        <a id="relationship_info" class="view_partner" href="partner.html"></a>
+        <p id="description"></p>
+
+        <h3><b>Total <span class="gender"></span> Points: <span class="total_points"></span></b></h3>
+        <br>
+
+        <p><b><span class="firstname"></span> is <span id="returnLabel"></span> <span class="gender"></span>!</b></p>
+
+        <div id="stars"></div>
+
+    </div>
+
+    <div class="buttons col-lg-1 col-md-1 col-sm-1">
+
+        <div class="clickable link_so">
+            <i class="fa fa-heart fa-3x red view_partner"></i>
+            <br> My <span class="so_gender"></span> <br>
         </div>
 
-        <div class="tabs col-lg-9">
-            <ul>
-                <li><a href="profile.html">My Profile</a></li>
-                <li id="relationship_tab"><a href="relationship.html">Relationship Stats</a></li>
-                <li><a href="history.html">Relationship History</a></li>
-                <li><a href="explore.html">Explore Profiles</a></li>
-                <li><a href="index.html" id="logoff"><i class="fa fa-user-times fa"></i>Log Out</a></li>
-            </ul>
+        <div class="clickable">
+            <i class="fa fa-edit fa-3x green"></i>
+            <br> Edit Profile<br>
+        </div>
+
+        <div class="clickable">
+            <i class="fa fa-cogs fa-3x dark-grey"></i>
+            <br> Settings<br>
         </div>
 
     </div>
 
-    <div class="row">
+</div>
 
-        <div class="portrait col-lg-3 col-md-6  col-sm-12">
-            <img id= "profile_picture">
-        </div>
+<div class="row">
 
-        <div class="user_css col-lg-8 col-md-5 col-sm-11">
-            <h1><b> <span class="firstname"></span> <span class="lastname"></span></b></h1>
-            <a id="relationship_info" class="view_partner" href="partner.html"></a>
-            <p id="description"></p>
+    <div class="light-green col-lg-11 col-md-11  col-sm-12">
 
-            <h3><b>Total <span class="gender"></span> Points: <span class="total_points"></span></b></h3>
-            <br>
+        <h2>Overview most recent deeds</h2>
 
-            <p><b><span class="firstname"></span> is <span id="returnLabel"></span> <span class="gender"></span>!</b></p>
-
-            <div id="stars"></div>
-
-        </div>
-
-        <div class="buttons col-lg-1 col-md-1 col-sm-1">
-
-            <div class="clickable link_so">
-                <i class="fa fa-heart fa-3x red view_partner"></i>
-                <br> My <span class="so_gender"></span> <br>
-            </div>
-
-            <div class="clickable">
-                <i class="fa fa-edit fa-3x green"></i>
-                <br> Edit Profile<br>
-            </div>
-
-            <div class="clickable">
-                <i class="fa fa-cogs fa-3x dark-grey"></i>
-                <br> Settings<br>
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="row">
-
-        <div class="light-green col-lg-11 col-md-11  col-sm-12">
-
-            <h2>Overview most recent deeds</h2>
-
-            <div id="deeds_overview">
+        <div id="deeds_overview">
             <!--Deeds overview will load here-->
-            </div>
-
-            <h2 class="center"><b>Total <span class="gender"></span> points: <span class="total_points"></span></b></h2>
-
         </div>
 
-        <div class="buttons button col-lg-1 col-md-1 col-sm-12">
-            <div id="ask_points">
-                <i class="fa fa-plus-circle fa-3x green" ></i><br>
-                Request <span class="gender"></span> Points<br>
-            </div>
+        <h2 class="center"><b>Total <span class="gender"></span> points: <span class="total_points"></span></b></h2>
 
-            <div id="review_points">
-                <i class="fa fa-eye fa-3x blue"></i><br>
-                Review Requested Points<br>
-            </div>
+    </div>
 
+    <div class="buttons button col-lg-1 col-md-1 col-sm-12">
+        <div id="ask_points">
+            <i class="fa fa-plus-circle fa-3x green" ></i><br>
+            Request <span class="gender"></span> Points<br>
         </div>
 
-        <div class="buttons button col-lg-1 col-md-1 col-sm-12" >
-
+        <div id="review_points">
+            <i class="fa fa-eye fa-3x blue"></i><br>
+            Review Requested Points<br>
         </div>
 
     </div>
 
-    <div id="overlay" class="hidden"></div>
-
-    <!-- request points window -->
-    <div id="requestWindow" class="popup user_css hidden">
-
-        <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
-        <h1>Request <span class="gender"></span> points <i class="fa fa-heart fa-1x red"></i> from <span class="so_name"></span></h1> <br>
-
-        <h2>Select the deeds you want <span class="so_name"></span> to endorse you for:</h2>
-
-        <div class="points_list" id="deeds_list">
-            <!--All deeds will load here-->
-        </div>
-
-        <br> <h3>Requesting <span class="red">+<span id="total_points">0</span> <span class="gender"></span> points</span> </h3> <br>
-
-        <h5 class="button user_css" id="submitRequest"> <i class="fa fa-check-circle fa"></i>  Submit Request </h5>
-        <h5 class="button user_css" id="resetPoints"> <i class="fa fa-fire fa"></i> Start Over </h5>
-        <h5 class="button user_css" id="redo"> <i class="fa fa-arrow-circle-right fa"></i>  Redo </h5>
-        <h5 class="button user_css" id="undo"> <i class="fa fa-arrow-circle-left fa"></i>  Undo </h5>
+    <div class="buttons button col-lg-1 col-md-1 col-sm-12" >
 
     </div>
 
-    <!-- review points window -->
-    <div id="reviewWindow" class="popup user_css hidden">
+</div>
 
-        <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
-        <h1>Reviewing pending points <i class="fa fa-heart fa-1x red"></i> for <span class="so_name"></span></h1> <br>
+<div id="overlay" class="hidden"></div>
 
-        <h2>Select from the list:</h2>
+<!-- request points window -->
+<div id="requestWindow" class="popup user_css hidden">
 
-        <div class="points_list" id="review_list">
-            <!--All deeds pending aproval will load here-->
-        </div>
+    <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
+    <h1>Request <span class="gender"></span> points <i class="fa fa-heart fa-1x red"></i> from <span class="so_name"></span></h1> <br>
 
-        <br> <h3><span class="red">+<span id="selected_points">0</span></span> <span class="so_gender"></span> points from selected deeds! </h3> <br>
+    <h2>Select the deeds you want <span class="so_name"></span> to endorse you for:</h2>
 
-        <h5 class="button user_css" id="acceptPoints"> <i class="fa fa-check-circle fa"></i>  Accept Selected </h5>
-        <h5 class="button user_css" id="declinePoints"> <i class="fa fa-fire fa"></i> Decline Selected  </h5>
-        <h5 class="button user_css" id="redo2"> <i class="fa fa-arrow-circle-right fa"></i>  Redo </h5>
-        <h5 class="button user_css" id="undo2"> <i class="fa fa-arrow-circle-left fa"></i>  Undo </h5>
-
+    <div class="points_list" id="deeds_list">
+        <!--All deeds will load here-->
     </div>
 
-    <!-- Your code ends here -->
+    <br> <h3>Requesting <span class="red">+<span id="total_points">0</span> <span class="gender"></span> points</span> </h3> <br>
 
-    <!-- External Scripts -->
+    <h5 class="button user_css greyed_out green" id="submitRequest"> <i class="fa fa-check-circle fa green"></i>  Submit Request </h5>
+    <h5 class="button user_css greyed_out red" id="resetPoints"> <i class="fa fa-fire fa red"></i> Start Over </h5>
+    <h5 class="button user_css greyed_out" id="redo"> <i class="fa fa-arrow-circle-right fa"></i>  Redo </h5>
+    <h5 class="button user_css greyed_out" id="undo"> <i class="fa fa-arrow-circle-left fa"></i>  Undo </h5>
 
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</div>
 
-    <!-- Bootstrap Scripts -->
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- review points window -->
+<div id="reviewWindow" class="popup user_css hidden">
 
-    <!-- Database -->
-    <script src="db/DB.js" type="text/javascript"></script>
+    <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
+    <h1>Reviewing pending points <i class="fa fa-heart fa-1x red"></i> for <span class="so_name"></span></h1> <br>
 
-    <!-- Scripts-->
-    <script src="js/scripts.js" type="text/javascript"></script>
-    <script src="js/profile.js" type="text/javascript"></script>
+    <h2>Select from the list:</h2>
 
-    <script src="js/translations/profile.js" type="text/javascript"></script>
-    <script src="js/translations/common.js" type="text/javascript"></script>
-    <script src="js/multilanguage.js" type="text/javascript"></script>
+    <div class="points_list" id="review_list">
+        <!--All deeds pending aproval will load here-->
+    </div>
+
+    <br> <h3><span class="red">+<span id="selected_points">0</span></span> <span class="so_gender"></span> points from selected deeds! </h3> <br>
+
+    <h5 class="button user_css greyed_out" id="acceptPoints"> <i class="fa fa-check-circle fa green"></i>  Accept Selected </h5>
+    <h5 class="button user_css greyed_out" id="declinePoints"> <i class="fa fa-times-circle fa red"></i> Decline Selected  </h5>
+    <h5 class="button user_css greyed_out" id="redoSelection"> <i class="fa fa-arrow-circle-right fa"></i>  Redo Select </h5>
+    <h5 class="button user_css greyed_out" id="undoSelection"> <i class="fa fa-arrow-circle-left fa"></i>  Undo Select </h5>
+
+</div>
+
+<!-- review binding requests window -->
+<div id="bindingWindow" class="popup center hidden">
+
+    <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
+    <h3 class="center">You got a <br>Binding <i class="fa fa-heart fa-1x red"></i> Request </span></h3>
+
+    <!-- prospect information loads here -->
+    <h5 class="center"> <span class="prospectName"></span> wants to bind your Koibito profiles!</h5>
+    <img id= "prospectPicture">
+    <div class='center' id="prospectStars"></div>
+    <h5 class="center"> <span class="prospectName"></span> is <span id="prospectLabel"></span> <span id="prospectGender"></span>!</h5>
+    <br>
+
+    <h5 class="button" id="decideLater"> <i class="fa fa-clock-o fa-2x blue"></i> Decide Later</h5>
+    <h5 class="button" id="declineBinding"> <i class="fa fa-heart-o fa-2x red"></i> Decline</h5>
+    <h5 class="button" id="acceptBinding"> <i class="fa fa-heart fa-2x red"></i>  Accept!</h5>
+
+</div>
+
+<!-- Your code ends here -->
+
+<!-- External Scripts -->
+
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Bootstrap Scripts -->
+<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Database -->
+<script src="db/DB.js" type="text/javascript"></script>
+
+<!-- Scripts-->
+<script src="js/scripts.js" type="text/javascript"></script>
+<script src="js/profile.js" type="text/javascript"></script>
+
+<script src="js/translations/profile.js" type="text/javascript"></script>
+<script src="js/translations/common.js" type="text/javascript"></script>
+<script src="js/multilanguage.js" type="text/javascript"></script>
 </body>
 </html>

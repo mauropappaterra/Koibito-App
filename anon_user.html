@@ -33,100 +33,100 @@
 
 </head>
 <body>
-    <!-- Your code starts here -->
+<!-- Your code starts here -->
 
-    <div class="row">
-        <div class="col-lg-3">
-            <h1>Koibito <i class="fa fa-heart fa-1x red"></i> App </h1>
-        </div>
-
-        <div class="tabs col-lg-9">
-            <ul>
-                <li><a href="profile.html">My Profile</a></li>
-                <li id="relationship_tab"><a href="relationship.html">Relationship Stats</a></li>
-                <li><a href="history.html">Relationship History</a></li>
-                <li><a href="explore.html">Explore Profiles</a></li>
-                <li><a href="index.html" id="logoff"><i class="fa fa-user-times fa"></i>Log Out</a></li>
-            </ul>
-        </div>
+<div class="row">
+    <div class="col-lg-3">
+        <h1>Koibito <i class="fa fa-heart fa-1x red"></i> App </h1>
     </div>
 
-    <div class="row">
+    <div class="tabs col-lg-9">
+        <ul>
+            <li><a href="profile.html">My Profile</a></li>
+            <li id="relationship_tab"><a href="relationship.html">Relationship Stats</a></li>
+            <li><a href="history.html">Relationship History</a></li>
+            <li><a href="explore.html">Explore Profiles</a></li>
+            <li><a href="index.html" id="logoff"><i class="fa fa-user-times fa"></i>Log Out</a></li>
+        </ul>
+    </div>
+</div>
 
-        <div class="portrait col-lg-3 col-md-6  col-sm-12">
-            <img src="" id="profile_picture">
-        </div>
+<div class="row">
 
-        <div class="anon_css col-lg-8 col-md-5 col-sm-11">
-            <h1><b><span class="firstname"></span> <span class="lastname"></span></b></h1>
-            <span id="relationship_info"></span>
-            <p id="description"></p>
+    <div class="portrait col-lg-3 col-md-6  col-sm-12">
+        <img src="" id="profile_picture">
+    </div>
 
-            <h3><b>Total <span class="gender"></span> Points: <span class="total_points"></span></b></h3>
+    <div class="anon_css col-lg-8 col-md-5 col-sm-11">
+        <h1><b><span class="firstname"></span> <span class="lastname"></span></b></h1>
+        <span id="relationship_info"></span>
+        <p id="description"></p>
 
-            <br>
+        <h3><b>Total <span class="gender"></span> Points: <span class="total_points"></span></b></h3>
 
-            <p><b><span class="firstname"></span> is <span id="score"></span> <span class="gender"></span>!</b></p>
-            <span id="stars"></span>
+        <br>
 
+        <p><b><span class="firstname"></span> is <span id="score"></span> <span class="gender"></span>!</b></p>
+        <span id="stars"></span>
 
-        </div>
-
-        <div class="buttons col-lg-1 col-md-1 col-sm-1 clickable" id="bind">
-            <i class="fa fa-heart-o fa-3x red"></i>Request Binding<br>
-        </div>
 
     </div>
 
-    <div class="row">
-        <div class="light-green col-lg-12 col-md-12  col-sm-12">
-            <h2>Overview most recent deeds</h2>
-            <div id="deeds_overview">
-                <!--Deeds overview will load here-->
-            </div>
-            <h2 class="center"><b>Total <span class="gender"></span> points: <span class="total_points"></span></b></h2>
-        </div>
+    <div class="buttons col-lg-1 col-md-1 col-sm-1 clickable" id="bind">
+        <!-- bind/request sent button will load here-->
     </div>
 
-    <div id="overlay" class="hidden"></div>
+</div>
 
-    <!-- bind window -->
-    <div id="bindWindow" class="popup anon_css hidden">
-
-        <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
-
-        <div class="center">
-            <h2>Request <i class="fa fa-heart fa-2x red"></i> Bind</h2><br>
-            <h2>Confirm Action</h2>
-            <h5>Are you sure you want to bind your koibito profile to <span class="firstname"></span>? That means that you are together as a couple</b>,
-                and <b>you both will be able to send/request points</b> in the app!</h5> <br>
+<div class="row">
+    <div class="light-green col-lg-12 col-md-12  col-sm-12">
+        <h2>Overview most recent deeds</h2>
+        <div id="deeds_overview">
+            <!--Deeds overview will load here-->
         </div>
-        <h5 class="button so_css" id="confirmBind"> <i class="fa fa-check-circle fa"></i> YES! Send Bind request! </h5>
-        <h5 class="button so_css" id="cancelBind"> <i class="fa fa-fire fa"></i> NO! Cancel Request </h5>
-
+        <h2 class="center"><b>Total <span class="gender"></span> points: <span class="total_points"></span></b></h2>
     </div>
+</div>
+
+<div id="overlay" class="hidden"></div>
+
+<!-- bind window -->
+<div id="bindWindow" class="popup anon_css hidden">
+
+    <a class="close" onclick=""><i class="fa fa-times fa"></i></a>
+
+    <div class="center">
+        <h2>Request <i class="fa fa-heart fa-2x red"></i> Bind</h2><br>
+        <h2>Confirm Action</h2>
+        <h5>Are you sure you want to bind your koibito profile to <span class="firstname"></span>? That means that you are together as a couple</b>,
+            and <b>you both will be able to send/request points</b> in the app!</h5> <br>
+    </div>
+    <h5 class="button so_css" id="confirmBind"> <i class="fa fa-check-circle fa green"></i> YES! Send Bind request! </h5>
+    <h5 class="button so_css" id="cancelBind"> <i class="fa fa-times-circle fa red"></i> NO! Cancel Request </h5>
+
+</div>
 
 
-    <!-- Your code ends here -->
+<!-- Your code ends here -->
 
-    <!-- External Scripts -->
+<!-- External Scripts -->
 
-    <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- JQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <!-- Bootstrap Scripts -->
-    <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+<!-- Bootstrap Scripts -->
+<script src="bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
 
-    <!-- Database -->
-    <script src="db/DB.js" type="text/javascript"></script>
+<!-- Database -->
+<script src="db/DB.js" type="text/javascript"></script>
 
-    <!-- Scripts-->
-    <script src="js/scripts.js" type="text/javascript"></script>
-    <script src="js/anon_user.js" type="text/javascript"></script>
+<!-- Scripts-->
+<script src="js/scripts.js" type="text/javascript"></script>
+<script src="js/anon_user.js" type="text/javascript"></script>
 
-    <script src="js/translations/single.js" type="text/javascript"></script>
-    <script src="js/translations/common.js" type="text/javascript"></script>
-    <script src="js/multilanguage.js" type="text/javascript"></script>
+<script src="js/translations/single.js" type="text/javascript"></script>
+<script src="js/translations/common.js" type="text/javascript"></script>
+<script src="js/multilanguage.js" type="text/javascript"></script>
 </body>
 </html>

@@ -63,6 +63,22 @@ a:hover{
     position: fixed;
 }
 
+#bindingWindow {
+    top: 7%;
+    margin-left: 35%;
+    width: 40%;
+    height: 90%;
+}
+
+.prospectPicture {
+    height: 55%;
+
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+}
+
 .popup h1,.popup h3 {
     text-align: center;
 }

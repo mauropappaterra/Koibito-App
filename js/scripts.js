@@ -144,7 +144,7 @@ function getGender (index){
 function formatDate (date) {
     /**Returns formatted date as follows:  YYYY/MM/DD at 19:30 hs
      * e.g.: "2018/03/19 at 21:00:00 hs" */
-    //alert(date);
+        //alert(date);
     var date = new Date(date);
     var dd = date.getDate();
     var mm = formatMonth(date.getMonth());
@@ -252,8 +252,8 @@ function updatePointsNonce (deeds_array){
 }
 
 function checkRepeated (deed, deeds_array){
-    /** Given a deed index and an array of deeds as argument, this method returns true if the deed
-     * is already contained in the given array and false otherwise */
+    /** Given a deed index and an array of deeds as argument, this method returns the number of times
+     * the deed is contained */
     var multiplier = 1;
     deeds_array.forEach(function(item) {
         if(deed == item){
@@ -278,7 +278,7 @@ function hasSO (username){
     var result = false;
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
         if (this.A == username || this.B == username){
-            if (this.date_ended == null){
+            if (this.date_ended == null && this.date_started != null){
                 result = true;
             }
         }
@@ -290,7 +290,7 @@ function getSO (username){
     /** Given a username as argument, this method returns the SO (significant other) username */
     var so_username = null;
     $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
-        if ((this.A == username || this.B == username) && this.date_ended == null){
+        if ((this.A == username || this.B == username) && this.date_ended == null && this.date_started != null){
             if (this.A == username){
                 so_username = this.B;
             } else {
@@ -299,6 +299,32 @@ function getSO (username){
         }
     });
     return so_username;
+}
+
+function getBindingRequests (username){
+    /** Given a username as argument, this method returns an array with all usernames
+     * that requested binding*/
+    var requested = [];
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if (this.B == username && this.date_started == null){
+            if (!hasSO(this.A)){
+                requested.push(this.A)
+            }
+        }
+    });
+    return requested;
+}
+
+function checkBindingRequested (username_a, username_b){
+    /** Given two usernames as argument, checks if username_a sent a binding request to username_b*/
+    var requested = false;
+    //alert("Checking if " + username_a +" sent request to " + username_b);
+    $.each(SESSION_RELATIONSHIPS_TABLE, function(element){
+        if ((this.A == username_a && this.B == username_b) && this.date_started == null){
+            requested = true;
+        }
+    });
+    return requested;
 }
 
 function getRelationshipStartDate (username_a, username_b){
@@ -474,4 +500,3 @@ function relationshipLabel (equality_difference) {
     }
     return relationshipVeredict;
 }
-

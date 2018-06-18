@@ -26,6 +26,28 @@ if (anon_username == null){ // if there is no user to display, return to profile
     if( user_information.username == anon_information.username){
         window.location.href = "profile.html"; // if anon == user redirect to corresponding view
     }
+
+    //alert(checkBindingRequested(user_information.username, anon_information.username));
+
+    if (checkBindingRequested(user_information.username, anon_information.username)){ // check if binding request already sent
+        $("#bind").append(
+            "<i class='fa fa-heart-o fa-3x grey'></i><br>Binding Request Sent<br>");
+        $("#bind").addClass("greyed_out");
+    } else {
+        if (checkBindingRequested(anon_information.username, user_information.username)){
+            $("#bind").append(
+                "<i class='fa fa-heart fa-3x red'></i>Respond to Request<br>");
+        }else {
+            if (hasSO(anon_information.username)){
+                $("#bind").append(
+                    "<i class='fa fa-heart fa-3x grey'></i><br>Already has a koibito!<br>");
+                $("#bind").addClass("greyed_out");
+            } else {
+                $("#bind").append(
+                    "<i class='fa fa-heart-o fa-3x red'></i>Request Binding<br>");
+            }
+        }
+    }
     //alert("You are looking at anonymous " + anon_information.username);
 
     /*Print anon information into DOM*/
@@ -41,7 +63,7 @@ if (anon_username == null){ // if there is no user to display, return to profile
     /*Print anon relationship information into DOM*/
     if (hasSO(anon_information.username)){
 
-       var so_information = getUserInfo(getSO(anon_username));
+        var so_information = getUserInfo(getSO(anon_username));
 
         $("#relationship_info").html("<b>Current "+ getGender(so_information.gender) +": </b>" + so_information.first_name + " <i class='fa fa-heart red'></i>");
         $("#relationship_info").addClass("link_anon");
@@ -65,39 +87,42 @@ if (anon_username == null){ // if there is no user to display, return to profile
     /*Load Anon Overview into page, this loop prints to DOM in chronological order the last 6 deeds completed*/
     $.each(anon_deed_history.slice(-6), function(element){ // fill in deeds table
         $("#deeds_overview").prepend(
-        "<div class='deed " + gender +"'>" +
-        "<img src='img/deeds/"+ this.deed +".png'>" +
-        "<h3 class='title'>" + anon_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
-        "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by+" link_white'>" +getFirstname(this.endorsed_by)  + "</span> <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
-        "<h4 class='points'><b>" + deedPoints(this.deed)+" points</b></h4>" +
-        "</div>"
-    )
+            "<div class='deed " + gender +"'>" +
+            "<img src='img/deeds/"+ this.deed +".png'>" +
+            "<h3 class='title'>" + anon_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
+            "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by+" link_white'>" +getFirstname(this.endorsed_by)  + "</span> <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
+            "<h4 class='points'><b>" + deedPoints(this.deed)+" points</b></h4>" +
+            "</div>"
+        )
     });
 }
 
 $("#confirmBind").click(function(){
 
     if (hasSO(user_information.username)){
-        alert("You can't send a bind request if you are currently in a relationship! You must unbind from your current koibito first!")
+        alert("You can't send a bind request if you are currently in a relationship! You must unbind from your current koibito first!");
         $("#overlay").addClass("hidden");
         $("#bindWindow").addClass("hidden")
     } else {
         if (hasSO(anon_information.username)){
-            alert("You can't send a bind request to someone in a relationship! They must unbind from their current koibito first!")
+            alert("You can't send a bind request to someone in a relationship! They must unbind from their current koibito first!");
             $("#overlay").addClass("hidden");
-            $("#bindWindow").addClass("hidden")
+            $("#bindWindow").addClass("hidden");
         } else {
             var new_relationship = {
                 "A": user_information.username,
                 "B": anon_username,
-                "date_started": new Date(), // null
+                "date_started": null, // requested binding have no start date
                 "date_ended": null,
             };
             //alert (JSON.stringify(new_relationship));
             SESSION_RELATIONSHIPS_TABLE.push(new_relationship);
             sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
 
-            window.location.href = "partner.html"; // redirect to corresponding view
+            alert("You have sent a bind request to " + anon_information.first_name +"!, now you must wait for their response!");
+            //$("#overlay").addClass("hidden");
+            //$("#bindWindow").addClass("hidden")
+            location.reload();
         }
     }
 });
