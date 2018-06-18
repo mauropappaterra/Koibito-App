@@ -150,7 +150,7 @@ $("#acceptBinding").click(function() {
             if (this.A == anon_username){
                 this.date_started = new Date(); // start relationship
             } else {
-                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this)
+                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this);
                 SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
             }
         }

@@ -271,7 +271,8 @@ $("#declinePoints").click(function(){
             $.each(SESSION_HISTORY_TABLE , function(element){ // fill in deeds table
                 if (this.endorsed_by == user_information.username && this.date == null && this.deed == item){
                     //alert("found! " +  JSON.stringify(this));
-                    this.date = -1; // flag for removal
+                    var deleteMe = SESSION_HISTORY_TABLE.indexOf(this);
+                    SESSION_HISTORY_TABLE.splice(deleteMe,1);
                     //alert(JSON.stringify(this));
                     return 0;
                 }
@@ -422,7 +423,7 @@ $("#acceptBinding").click(function() {
             if (this.A == binding_requests[binding_index]){
                 this.date_started = new Date(); // start relationship
             } else {
-                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this)
+                var deleteMe = SESSION_RELATIONSHIPS_TABLE.indexOf(this);
                 SESSION_RELATIONSHIPS_TABLE.splice(deleteMe,1);
             }
         }

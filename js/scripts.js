@@ -386,7 +386,7 @@ function getUserDeeds(username) {
      * done by the user */
     var user_deeds = [];
     $.each(SESSION_HISTORY_TABLE, function(element){ // fill in deeds table
-        if (this.username == username && this.date != null && this.date != -1){ // find more elegant solution
+        if (this.username == username && this.date != null){
             user_deeds.push(this)
         }
     });
@@ -406,7 +406,7 @@ function getRelationshipDeeds(username_a, username_b,) {
     var relationship_deeds = [];
     $.each(SESSION_HISTORY_TABLE, function(element){ // fill in deeds table
 
-        if (((this.username == username_a && this.endorsed_by == username_b) || (this.username == username_b && this.endorsed_by == username_a)) && (this.date != -1 && this.date != null)){// find more elegant solution
+        if (((this.username == username_a && this.endorsed_by == username_b) || (this.username == username_b && this.endorsed_by == username_a)) && this.date != null){
             relationship_deeds.push(this)
         }
     });
