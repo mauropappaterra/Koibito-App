@@ -121,8 +121,6 @@ $("#confirmBind").click(function(){
             sessionStorage.setItem("SESSION_RELATIONSHIPS_TABLE", JSON.stringify(SESSION_RELATIONSHIPS_TABLE));
 
             alert("You have sent a bind request to " + anon_information.first_name +"!, now you must wait for their response!");
-            //$("#overlay").addClass("hidden");
-            //$("#bindWindow").addClass("hidden")
             location.reload();
         }
     }

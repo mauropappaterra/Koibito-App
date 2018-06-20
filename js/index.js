@@ -60,6 +60,13 @@ function signupScript (signup_data){
         }
     });
 
+    var image_file = $('#new_avatar').prop('files')[0]; //fetch profile picture
+    //var image_file = signup_data.avatar;
+
+    /* VERY IMPORTANT!
+    Add Encapsulation and Data sanitation routine here!!
+    */
+
     var first_name = signup_data.first_name.value;
     var last_name = signup_data.last_name.value;
     var DOB = signup_data.DOB.value;
@@ -89,6 +96,9 @@ function signupScript (signup_data){
     };
     //alert (JSON.stringify(new_info));
 
+    /* Upload avatar image to server */
+    uploadImage(image_file, new_info.username);
+
     //**SAVE TO DATABASE HERE**
     SESSION_INFORMATION_TABLE.push(new_info);
     sessionStorage.setItem("SESSION_INFORMATION_TABLE", JSON.stringify(SESSION_INFORMATION_TABLE));
@@ -97,6 +107,28 @@ function signupScript (signup_data){
 
     $("#overlay").addClass("hidden");
     $("#signupWindow").addClass("hidden");
+}
+
+function uploadImage (imageFile, fileName){
+    //alert("this is happening!");
+
+    var file = imageFile; //$('#new_avatar').prop('files')[0];
+    var form_data = new FormData();
+    form_data.append('file', file);
+    form_data.append('name', fileName);
+    //alert(form_data);
+
+    $.ajax({
+        url: 'upload.php', // point to server-side PHP script
+        type: 'POST',      // Type of request to be send, called as method
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data/*,
+        success: function(php_script_response){
+            alert("PHP server says: " + php_script_response); // display response from the PHP script, if any
+        }*/
+    });
 }
 
 function nextPage(){
