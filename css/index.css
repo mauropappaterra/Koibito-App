@@ -104,6 +104,10 @@ ul li:active {
     clear: both;
 }
 
+#loginWindow {
+    width: 40%;
+}
+
 #signupWindow {
     top: 5%;
 }
@@ -129,7 +133,7 @@ ul li:active {
 
 input[type=text], input[type=password], input[type=select], input[type=date], textarea{
     width: 75%;
-    padding: 8px 10px;
+    padding: 10px 10px;
     margin: 8px 0;
     display: inline-block;
     border-radius: 4px;
@@ -187,4 +191,3 @@ h5 {
 h5 a {
     color: white;
 }
-
