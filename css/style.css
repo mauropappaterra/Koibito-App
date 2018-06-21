@@ -183,18 +183,21 @@
 
 .languages_menu{
     bottom: 0px;
+
     display: block;
-    margin-left: auto;
+    margin-left: 40%;
     margin-right: auto;
     clear: both;
+
+    background-color: #0fac56;
 }
 
 .languages {
-    margin-left: 20%;
+    margin-left: 2%;
 }
 
 .languages img {
-    width: 150px;
+    width: 12%;
     float: left;
     padding: 2%;
 }

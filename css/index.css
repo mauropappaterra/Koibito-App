@@ -5,7 +5,19 @@
 
 body {
     background-color: lightpink;
+    padding: 20px;
     overflow: auto;
+}
+
+h1, h2 {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+}
+
+#logo{
+    font-size: 65px;
 }
 
 a{
@@ -19,11 +31,35 @@ a:hover{
 }
 
 ul {
+    margin:5%;
     list-style-type: none;
 }
 
 ul li {
+    display: block;
+
+    margin-left: auto;
+    margin-right: auto;
+    clear: both;
+
+    width: 25%;
+    padding: 10px;
+    margin-top: 20px;
+    color: white;
+    background-color: #47b3ff;
+    font-size: xx-large;
+    text-align: center;
+    border-radius: 5px;
+
     cursor: pointer;
+}
+
+ul li:hover {
+    background-color: #2dd6ff;
+}
+
+ul li:active {
+    background-color: #ff8e97;
 }
 
 /*Pop up windows*/
