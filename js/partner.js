@@ -44,16 +44,24 @@ if (!hasSO(login_data.username)){
     $("#returnLabel").text(returnLabel(points));
 
     /*Load Partners Overview into page, this loop prints to DOM in chronological order the last 6 deeds completed*/
-    $.each(partners_deed_history.slice(-6), function(element){
+    if (partners_deed_history.length > 0) {
+        $.each(partners_deed_history.slice(-6), function(element){
+            $("#deeds_overview").prepend(
+                "<div class='deed " + so_gender +"'>" +
+                "<img src='img/deeds/"+ this.deed +".png'>" +
+                "<h3 class='title'>" + so_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
+                "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by +" link_white'>" + getFirstname(this.endorsed_by) + "</span>  <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
+                "<h4 class='points'><b>+"+ deedPoints(this.deed)+" points</b></h4>" +
+                "</div>"
+            )
+        });
+    } else {
         $("#deeds_overview").prepend(
             "<div class='deed " + so_gender +"'>" +
-            "<img src='img/deeds/"+ this.deed +".png'>" +
-            "<h3 class='title'>" + so_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
-            "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by +" link_white'>" + getFirstname(this.endorsed_by) + "</span>  <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
-            "<h4 class='points'><b>+"+ deedPoints(this.deed)+" points</b></h4>" +
+            "<h2 class='title white center'> There is nothing to display here yet!</h2>" +
             "</div>"
         )
-    });
+    }
 }
 
 /*Deed Selection functions*/

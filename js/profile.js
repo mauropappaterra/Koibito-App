@@ -12,6 +12,7 @@
 var login_data = localStorage.getItem("login_data");
 
 var requested_deeds = []; // keep track of the endorsed deeds, also used for undo functionality
+var deeds_review = []; // keep track of the pending deeds that needs the users review
 var selected_deeds = []; // keep track of the pending deeds selected, also used for undo functionality
 var redo = []; // keep track of undone processes for redo functionality
 
@@ -75,16 +76,26 @@ if (login_data == null){
     $("#returnLabel").text(returnLabel(user_points));
 
     /*Load User Overview into page, this loop prints to DOM in chronological order the last 6 deeds completed*/
-    $.each(user_deed_history.slice(-6) , function(element){ // fill in deeds table
+
+    if (user_deed_history.length > 0) {
+        $.each(user_deed_history.slice(-6) , function(element){ // fill in deeds table
+            $("#deeds_overview").prepend(
+                "<div class='deed " + user_gender +"'>" +
+                "<img src='img/deeds/"+ this.deed +".png'>" +
+                "<h3 class='title'>" + user_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
+                "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by +" link_white'>" + getFirstname(this.endorsed_by) + "</span> <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
+                "<h4 class='points'><b>+"+ deedPoints(this.deed)+" points</b></h4>" +
+                "</div>"
+            )
+        });
+    } else {
         $("#deeds_overview").prepend(
             "<div class='deed " + user_gender +"'>" +
-            "<img src='img/deeds/"+ this.deed +".png'>" +
-            "<h3 class='title'>" + user_information.first_name + " " + deedDescription(this.deed) + "</h3>" +
-            "<h6 class='date'>Endorsed by <span class='link_anon "+ this.endorsed_by +" link_white'>" + getFirstname(this.endorsed_by) + "</span> <i class='fa fa-heart red'></i> on "+ formatDate(this.date) +"</h6>" +
-            "<h4 class='points'><b>+"+ deedPoints(this.deed)+" points</b></h4>" +
+            "<h2 class='title white center'> There is nothing to display here yet!</h2>" +
             "</div>"
         )
-    });
+    }
+
 }
 
 /*Deed Selection functions*/
@@ -327,14 +338,16 @@ $("#redoSelection").click(function(){
     //alert("Deeds Array:\n" + selected_deeds.toString());
 });
 
-function resetReviewPointsWindow() { // resets review points window
+function resetReviewPointsWindow() { // resets and review points window
+    deeds_review = getDeedsReview(user_information.username);
     selected_deeds = [];
     redo = [];
     $("#review_list").empty();
 
     /*Load points that need review*/
-    $.each(SESSION_HISTORY_TABLE , function(element){ // fill in deeds table
-        if (this.endorsed_by == user_information.username && this.date == null){
+
+    if (deeds_review.length > 0) {
+        $.each(deeds_review , function(element){ // fill in deeds table
             //alert(JSON.stringify(this))
             var deed_id = Math.floor(this.deed / 1000000);  // eliminate nonce, return real deed id
             $("#review_list").prepend(
@@ -344,8 +357,16 @@ function resetReviewPointsWindow() { // resets review points window
                 "<h4 class='points'><b>"+ deedPoints(deed_id) +" points</b></h4>" +
                 "</div>"
             )
-        }
-    });
+        });
+    } else {
+        $("#review_list").prepend(
+            "<div class='wakashu pending'>" +
+            "<h2 class='title white center'> There are no  pending points to review from " + so_information.first_name + "</h2>" +
+            "</div>"
+        )
+    }
+
+
 
     $("#redoSelection").addClass("greyed_out");
     $("#undoSelection").addClass("greyed_out");

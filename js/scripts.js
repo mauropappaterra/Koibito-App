@@ -115,6 +115,17 @@ function deedPoints (deed){
     return points;
 };
 
+function getDeedsReview (username){
+    /**Given an username as argument, this method returns an array of all pending deeds that need aproval*/
+    var review_deeds = [];
+    $.each(SESSION_HISTORY_TABLE , function(element){
+        if (this.endorsed_by == username && this.date == null){
+            review_deeds.push(this);
+        }
+    });
+    return review_deeds;
+}
+
 function getFirstname (username){
     /**Given an username as argument, this method returns the first name of from the DB */
     var first_name = "";
@@ -453,7 +464,7 @@ function relationshipStars (equality_difference, size) {
     /**This method calculates relationship starts based on equality difference and returns
      * the corresponding amount of starts to print into DOM. The size of the stars is given
      * by the argument size */
-    
+
     if (equality_difference > 70 || equality_difference == 0){
         return returnStars(1,size);
     } else {

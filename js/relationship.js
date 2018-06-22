@@ -95,6 +95,7 @@ var filtered_so_points = 0;
 defaultFilter(); // call default filter
 
 function defaultFilter(){
+    var empty = true;
     $(".filter_label").text("This Week's");
     $(".filter_label_2").text("this week");
 
@@ -112,6 +113,7 @@ function defaultFilter(){
         var deed_date = new Date(this.date);
 
         if (deed_date.getDate() <= today.getDate() && deed_date.getDate() >= (today.getDate() - today.getDay()) && deed_date.getMonth() >= today.getMonth() -1 && deed_date.getFullYear() >= today.getFullYear() - 1){
+            empty = false;
             if (this.username == user_information.username){
                 filtered_user_points += deedPoints(this.deed);
             } else {
@@ -121,9 +123,14 @@ function defaultFilter(){
         }
     });
     printStats(filtered_user_points, filtered_so_points);
+
+    if (empty){
+        printEmpty("for this week yet!");
+    }
 }
 
 $("#today").click(function(){
+    var empty = true;
     $(".filter_label").text("Today's");
     $(".filter_label_2").text("today");
 
@@ -141,6 +148,7 @@ $("#today").click(function(){
         var deed_date = new Date(this.date);
 
         if (today.getDate() == deed_date.getDate() && today.getMonth() == deed_date.getMonth() && today.getFullYear() == deed_date.getFullYear()){
+            empty = false;
             // calculate points with filter settings
             if (this.username == user_information.username){
                 filtered_user_points += deedPoints(this.deed);
@@ -151,6 +159,9 @@ $("#today").click(function(){
         }
     });
     printStats(filtered_user_points, filtered_so_points);
+    if (empty){
+        printEmpty("for today yet!");
+    }
 });
 
 $("#week").click(function(){ // "This Week" is the default filter
@@ -158,6 +169,7 @@ $("#week").click(function(){ // "This Week" is the default filter
 });
 
 $("#month").click(function(){
+    var empty = true;
     $(".filter_label").text("This Month's");
     $(".filter_label_2").text("this month");
 
@@ -175,6 +187,7 @@ $("#month").click(function(){
     $.each(relationship_deed_history, function(element){
         var deed_date = new Date(this.date);
         if (today.getMonth() == deed_date.getMonth() && today.getFullYear() == deed_date.getFullYear()){
+            empty = false;
             // calculate points with filter settings
             if (this.username == user_information.username){
                 filtered_user_points += deedPoints(this.deed);
@@ -185,9 +198,13 @@ $("#month").click(function(){
         }
     });
     printStats(filtered_user_points, filtered_so_points);
+    if (empty){
+        printEmpty("for this month yet!");
+    }
 });
 
 $("#year").click(function(){
+    var empty = true;
     $(".filter_label").text("This Year's");
     $(".filter_label_2").text("this year");
 
@@ -208,6 +225,7 @@ $("#year").click(function(){
         //alert (today);
         //alert (date_stamp);
         if (today.getFullYear() == deed_date.getFullYear()){
+            empty = false;
             // calculate points with filter settings
             if (this.username == user_information.username){
                 filtered_user_points += deedPoints(this.deed);
@@ -218,9 +236,13 @@ $("#year").click(function(){
         }
     });
     printStats(filtered_user_points, filtered_so_points);
+    if (empty){
+        printEmpty("for this year yet!");
+    }
 });
 
 $("#alltimes").click(function(){
+    var empty = true;
     $(".filter_label").text("All time's");
     $(".filter_label_2").text("all times");
 
@@ -235,7 +257,7 @@ $("#alltimes").click(function(){
     filtered_user_points = 0;
     /*Filter and load deeds into page*/
     $.each(relationship_deed_history, function(element){ // fill in deeds table
-
+        empty = false;
         // calculate points with filter settings
         if (this.username == user_information.username){
             filtered_user_points += deedPoints(this.deed);
@@ -245,8 +267,21 @@ $("#alltimes").click(function(){
         printDeed(this);
     });
     printStats(filtered_user_points, filtered_so_points);
-
+    if (empty){
+        printEmpty("yet!");
+    }
 });
+
+function printEmpty(message){
+    $("#filtered_deeds").prepend(
+        "<div class='deed wakashu'>" +
+        "<h2 class='title white center'>No deeds to display " + message + "</h2>" +
+        "</div>"
+    )
+
+    $("#filter_results").text("Nothing to display");
+    $("#filtered_equality_rate").text("Not Available");
+}
 
 function printDeed (input_deed){
     var a_gender = "";
