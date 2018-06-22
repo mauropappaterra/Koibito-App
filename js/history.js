@@ -22,16 +22,10 @@ if (login_data == null){
     var so_history = getSOHistory(login_data.username);
     //alert("relationship history: " + JSON.stringify(so_history));
 
-    var relationship_deed_history =[];
-    var user_points = 0;
-    var so_points = 0;
-
-    var relationship_points = user_points + so_points;
-    var user_percentage = percentage(user_points, relationship_points);
-    var so_percentage = percentage(so_points,relationship_points);
-    var gender_equality = equalityRate(user_percentage, so_percentage);
-
     if (so_information != null){
+        var relationship_deed_history =[];
+        var user_points = 0;
+        var so_points = 0;
 
         relationship_deed_history = getRelationshipDeeds(user_information.username,so_information.username);// retrieve couple's deeds
         user_points = getUsersPoints(user_information.username, relationship_deed_history)
@@ -40,7 +34,7 @@ if (login_data == null){
         relationship_points = user_points + so_points;
         user_percentage = percentage(user_points, relationship_points);
         so_percentage = percentage(so_points,relationship_points);
-        gender_equality = equalityRate(user_percentage, so_percentage);
+        gender_equality = equalityDifference(user_percentage, so_percentage);
 
         var start = new Date(2001, 12, 20);
         var finish = new Date();
@@ -72,7 +66,7 @@ if (login_data == null){
             "<h3 class='center'>Relationship <i class='fa fa-heartbeat fa-1x red'></i> Stats</h3>" +
 
             "<div class='center'>" +
-            relationshipStars (equalityDifference,1) +
+            relationshipStars (gender_equality,1) +
             "<p><b>" + user_information.first_name + " and " + so_information.first_name +" have "+ relationshipLabel(equalityDifference) +" relationship!</b></p>" +
             "</div>" +
 
@@ -105,7 +99,7 @@ if (login_data == null){
         relationship_points = user_points + so_points;
         user_percentage = percentage(user_points, relationship_points);
         so_percentage = percentage(so_points,relationship_points);
-        gender_equality = equalityRate(user_percentage, so_percentage);
+        gender_equality = equalityDifference(user_percentage, so_percentage);
 
         var start = new Date(2001, 12, 20);
         var finish = new Date();
@@ -137,7 +131,7 @@ if (login_data == null){
             "<h3 class='center'>Relationship <i class='fa fa-heartbeat fa-1x red'></i> Stats</h3>" +
 
             "<div class='center'>" +
-            relationshipStars (equalityDifference,1) +
+            relationshipStars (gender_equality,1) +
             "<p><b>" + user_information.first_name + " and " + so_information.first_name +" had "+ relationshipLabel(equalityDifference) +" relationship!</b></p>" +
             "</div>" +
 

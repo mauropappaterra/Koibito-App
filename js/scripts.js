@@ -69,28 +69,26 @@ function returnStars (number, size){
 
 function returnLabel (points){
     /**This method returns the corresponding label to print to DOM, given an amount of points */
-    var label = "";
 
     if (points < 1000) {
-        label = "a lice-infested";
+        return "a lice-infested";
     } else {
         if (points < 4000){
-            label = "a lousy";
+            return "a lousy";
         }else {
             if (points < 7000){
-                label = "an average";
+                return "an average";
             }else {
                 if (points < 10000){
-                    label = "an excellent";
+                    return "an excellent";
                 } else {
                     if (points >= 10000){
-                        label = "an amazing";
+                        return "an amazing";
                     }
                 }
             }
         }
     }
-    return label;
 }
 
 function deedDescription (deed){
@@ -413,7 +411,6 @@ function getRelationshipDeeds(username_a, username_b,) {
     return relationship_deeds;
 }
 
-
 function getUsersPoints(username, deedsArray) {
     /** Given a username and an array of deeds as argument, this method returns the total
      * points given by to the input username from the deeds array */
@@ -456,47 +453,50 @@ function relationshipStars (equality_difference, size) {
     /**This method calculates relationship starts based on equality difference and returns
      * the corresponding amount of starts to print into DOM. The size of the stars is given
      * by the argument size */
-    var relationship_stars = "";
 
-    if (equality_difference > 70){
-        relationship_stars = returnStars(1,size);
+    alert(equality_difference);
+
+    if (equality_difference > 70 || equality_difference == 0){
+        return returnStars(1,size);
     } else {
         if (equality_difference > 50){
-            relationship_stars = returnStars(2,size);
+            return returnStars(2,size);
         } else {
             if (equality_difference > 30){
-                relationship_stars = returnStars(3,size);
+                return returnStars(3,size);
             } else {
                 if (equality_difference > 10){
-                    relationship_stars = returnStars(4,size);
+                    return returnStars(4,size);
                 } else {
-                    relationship_stars = returnStars(5,size);
+                    return returnStars(5,size);
                 }
             }
         }
     }
-    return relationship_stars;
 }
 
 function relationshipLabel (equality_difference) {
     /**This method returns the corresponding label to print to DOM, given an amount the equality difference */
-    var relationshipVeredict = "";
-    if (equality_difference > 70){
-        relationshipVeredict = "a pretty lousy";
+
+    if (equality_difference > 70 || equality_difference == 0){
+        return "a pretty lousy";
     } else {
         if (equality_difference > 50){
-            relationshipVeredict = "a lame";
+            return "a lame";
         } else {
             if (equality_difference > 30){
-                relationshipVeredict = "an average";
+                return "an average";
             } else {
                 if (equality_difference > 10){
-                    relationshipVeredict = "an amazing";
+                    return "an amazing";
                 } else {
-                    relationshipVeredict = "an excellent";
+                    if (equality_difference > 0) {
+                        return "an excellent";
+                    } else {
+                        return "a pretty lousy";
+                    }
                 }
             }
         }
     }
-    return relationshipVeredict;
 }

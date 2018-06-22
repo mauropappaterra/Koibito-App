@@ -363,7 +363,7 @@ $(".view_partner").click(function() {
 function loadProspectWindow (username){
     var prospect_information = getUserInfo(username);
     var prospect_points = getUserPoints(prospect_information.username);
-    
+
     $(".prospectName").html(prospect_information.first_name);
     $("#prospectPicture").attr("src","img/users/"+ prospect_information.username +".jpg");
     $("#prospectPicture").addClass("link_anon " + prospect_information.username + " prospectPicture");
