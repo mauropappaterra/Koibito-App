@@ -60,7 +60,7 @@ if (login_data == null){
         // Check for binding requests!
         binding_requests = getBindingRequests(login_data.username);
         if (binding_requests.length > 0){
-            alert ("You got binding requests from: " + binding_requests.toString());
+            //alert ("You got binding requests from: " + binding_requests.toString());
             loadProspectWindow(binding_requests[binding_index])
         } /*else {
             alert ("You got no binding requests!");
@@ -363,9 +363,7 @@ $(".view_partner").click(function() {
 function loadProspectWindow (username){
     var prospect_information = getUserInfo(username);
     var prospect_points = getUserPoints(prospect_information.username);
-
-    alert(JSON.stringify(prospect_information));
-
+    
     $(".prospectName").html(prospect_information.first_name);
     $("#prospectPicture").attr("src","img/users/"+ prospect_information.username +".jpg");
     $("#prospectPicture").addClass("link_anon " + prospect_information.username + " prospectPicture");
