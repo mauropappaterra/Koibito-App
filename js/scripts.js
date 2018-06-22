@@ -453,9 +453,7 @@ function relationshipStars (equality_difference, size) {
     /**This method calculates relationship starts based on equality difference and returns
      * the corresponding amount of starts to print into DOM. The size of the stars is given
      * by the argument size */
-
-    alert(equality_difference);
-
+    
     if (equality_difference > 70 || equality_difference == 0){
         return returnStars(1,size);
     } else {

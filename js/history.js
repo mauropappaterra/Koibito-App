@@ -6,7 +6,7 @@
 /* HISTORY PAGE SCRIPTS
 * All scripts related to the history page. Each page has their own scripts in a single js document.
 * The methods translate() is unique for each individual page.
-*/
+*
 
 /*Retrieve login information from localStorage*/
 var login_data = localStorage.getItem("login_data");
