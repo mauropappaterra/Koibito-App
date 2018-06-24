@@ -90,12 +90,11 @@ if (login_data == null){
         });
     } else {
         $("#deeds_overview").prepend(
-            "<div class='deed " + user_gender +"'>" +
-            "<h2 class='title white center'> There is nothing to display here yet!</h2>" +
+            "<div class='deed wakashu'>" +
+            "<h4 class='title dark-green'> There is nothing to display here yet!</h4>" +
             "</div>"
         )
     }
-
 }
 
 /*Deed Selection functions*/
@@ -361,12 +360,10 @@ function resetReviewPointsWindow() { // resets and review points window
     } else {
         $("#review_list").prepend(
             "<div class='wakashu pending'>" +
-            "<h2 class='title white center'> There are no  pending points to review from " + so_information.first_name + "</h2>" +
+            "<h4 class='title dark-green center'> There are no pending points to review from " + so_information.first_name + "!</h4>" +
             "</div>"
         )
     }
-
-
 
     $("#redoSelection").addClass("greyed_out");
     $("#undoSelection").addClass("greyed_out");

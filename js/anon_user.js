@@ -99,12 +99,11 @@ if (anon_username == null){ // if there is no user to display, return to profile
         });
     } else {
         $("#deeds_overview").prepend(
-            "<div class='deed " + gender +"'>" +
-            "<h2 class='title white center'> There is nothing to display here yet!</h2>" +
+            "<div class='deed wakashu'>" +
+            "<h4 class='title dark-green'> There is nothing to display here yet!</h4>" +
             "</div>"
         )
     }
-
 
 }
 

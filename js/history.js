@@ -20,6 +20,7 @@ if (login_data == null){
     var user_information = getUserInfo(login_data.username);
     var so_information = getUserInfo(getSO(login_data.username));
     var so_history = getSOHistory(login_data.username);
+    $("#user_firstname").text("culo");//user_information.firstname);
     //alert("relationship history: " + JSON.stringify(so_history));
 
     if (so_information != null){

@@ -275,7 +275,7 @@ $("#alltimes").click(function(){
 function printEmpty(message){
     $("#filtered_deeds").prepend(
         "<div class='deed wakashu'>" +
-        "<h2 class='title white center'>No deeds to display " + message + "</h2>" +
+        "<h4 class='title dark-green center'>No deeds to display " + message + "</h4>" +
         "</div>"
     )
 

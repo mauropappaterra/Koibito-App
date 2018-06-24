@@ -57,8 +57,8 @@ if (!hasSO(login_data.username)){
         });
     } else {
         $("#deeds_overview").prepend(
-            "<div class='deed " + so_gender +"'>" +
-            "<h2 class='title white center'> There is nothing to display here yet!</h2>" +
+            "<div class='deed wakashu'>" +
+            "<h4 class='title dark-green center'> There is nothing to display here yet!</h4>" +
             "</div>"
         )
     }
