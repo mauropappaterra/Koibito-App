@@ -48,7 +48,7 @@ if (!hasSO(login_data.username)){ // check if user has a partner
     $(".total_points").text(user_points);
     $(".user_points_relationship").text(user_points_relationship);
     $("#stars").html(userStars(user_points, 0));
-    $("#returnLabel").text(returnLabel(user_points));
+    $("#score").text(returnLabel(user_points));
 
     /*LOAD DATA SO*/
     var so_points = calculatePoints(so_deed_history);
@@ -275,7 +275,7 @@ $("#alltimes").click(function(){
 function printEmpty(message){
     $("#filtered_deeds").prepend(
         "<div class='deed wakashu'>" +
-        "<h2 class='title white center'>No deeds to display " + message + "</h2>" +
+        "<h4 class='title dark-green center'>No deeds to display " + message + "</h4>" +
         "</div>"
     )
 

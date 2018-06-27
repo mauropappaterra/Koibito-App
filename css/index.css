@@ -9,13 +9,6 @@ body {
     overflow: auto;
 }
 
-h1, h2 {
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-    clear: both;
-}
-
 #logo{
     font-size: 65px;
 }
@@ -141,7 +134,7 @@ input[type=text], input[type=password], input[type=select], input[type=date], te
 }
 
 input[type=date] {
-     width: 25%;
+    width: 25%;
 }
 
 input[type=file] {

@@ -60,7 +60,7 @@ function signupScript (signup_data){
         }
     });
 
-    var image_file = $('#new_avatar').prop('files')[0]; //fetch profile picture
+    //var image_file = $('#new_avatar').prop('files')[0]; //fetch profile picture
     //var image_file = signup_data.avatar;
 
     /* VERY IMPORTANT!
