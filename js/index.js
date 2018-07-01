@@ -74,7 +74,7 @@ function signupScript (signup_data){
         "password": password,
         "email": email,
     };
-    alert (JSON.stringify(new_user));
+    //alert (JSON.stringify(new_user));
 
     //**SAVE TO DATABASE HERE**
     SESSION_USER_TABLE.push(new_user);
@@ -91,11 +91,9 @@ function signupScript (signup_data){
         "waifu": waifu,
         "wakashu": wakashu,
     };
-    alert (JSON.stringify(new_info));
+    //alert (JSON.stringify(new_info));
 
     /* Upload avatar image to server */
-    alert("uploading image now!");
-
     var avatar_image = document.getElementById("new_avatar").files[0]; //imageFile; //
     var form_data = new FormData();
     form_data.append('file', avatar_image);

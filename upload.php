@@ -7,7 +7,7 @@
             'img/users/' . $_FILES['file']['name']);
     }*/
 
-    echo 'PHP script executing!';
+    //echo 'PHP script executing!';
 
     $sourcePath = $_FILES['file']['tmp_name'];       // Storing source path of the file in a variable
     $targetPath = "img/users/" . $_POST['username']. ".jpg";//.$_FILES['file']['name']; // Target path where file is to be stored
