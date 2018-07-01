@@ -60,9 +60,6 @@ function signupScript (signup_data){
         }
     });
 
-    //var image_file = $('#new_avatar').prop('files')[0]; //fetch profile picture
-    //var image_file = signup_data.avatar;
-
     /* VERY IMPORTANT!
     Add Encapsulation and Data sanitation routine here!!
     */
@@ -77,7 +74,7 @@ function signupScript (signup_data){
         "password": password,
         "email": email,
     };
-    //alert (JSON.stringify(new_user));
+    alert (JSON.stringify(new_user));
 
     //**SAVE TO DATABASE HERE**
     SESSION_USER_TABLE.push(new_user);
@@ -94,29 +91,15 @@ function signupScript (signup_data){
         "waifu": waifu,
         "wakashu": wakashu,
     };
-    //alert (JSON.stringify(new_info));
+    alert (JSON.stringify(new_info));
 
     /* Upload avatar image to server */
-    uploadImage(image_file, new_info.username);
+    alert("uploading image now!");
 
-    //**SAVE TO DATABASE HERE**
-    SESSION_INFORMATION_TABLE.push(new_info);
-    sessionStorage.setItem("SESSION_INFORMATION_TABLE", JSON.stringify(SESSION_INFORMATION_TABLE));
-
-    alert("You have successfully created your Koibito profile!");
-
-    $("#overlay").addClass("hidden");
-    $("#signupWindow").addClass("hidden");
-}
-
-function uploadImage (imageFile, fileName){
-    //alert("this is happening!");
-
-    var file = imageFile; //$('#new_avatar').prop('files')[0];
+    var avatar_image = document.getElementById("new_avatar").files[0]; //imageFile; //
     var form_data = new FormData();
-    form_data.append('file', file);
-    form_data.append('name', fileName);
-    //alert(form_data);
+    form_data.append('file', avatar_image);
+    form_data.append('username', new_info.username);
 
     $.ajax({
         url: 'upload.php', // point to server-side PHP script
@@ -128,6 +111,38 @@ function uploadImage (imageFile, fileName){
         success: function(php_script_response){
             alert("PHP server says: " + php_script_response); // display response from the PHP script, if any
         }*/
+    });
+
+    //**SAVE TO DATABASE HERE**
+    SESSION_INFORMATION_TABLE.push(new_info);
+    sessionStorage.setItem("SESSION_INFORMATION_TABLE", JSON.stringify(SESSION_INFORMATION_TABLE));
+
+    alert("You have successfully created your Koibito profile!");
+
+    $("#overlay").addClass("hidden");
+    $("#signupWindow").addClass("hidden");
+
+};
+
+function uploadImage (fileName){
+    alert("this is happening!");
+
+    var imageFile = document.getElementById("new_avatar").files[0]; //imageFile; //
+    var form_data = new FormData();
+    form_data.append('file', imageFile);
+    form_data.append('name', fileName);
+    alert(form_data);
+
+    $.ajax({
+        url: 'upload.php', // point to server-side PHP script
+        type: 'POST',      // Type of request to be send, called as method
+        cache: false,
+        contentType: false,
+        processData: false,
+        data: form_data,
+        success: function(php_script_response){
+            alert("PHP server says: " + php_script_response); // display response from the PHP script, if any
+        }
     });
 }
 
